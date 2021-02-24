@@ -46,11 +46,17 @@ class FileTypesController extends Controller
             $result->extensions = json_decode($result->extensions);
 
             return view('backoffice.file-types.edit', ['result'=> $result]);
-            
+
         }else{
             return view('backoffice.file-types.add');
         }
 
+    }
+
+    public function getAll(){
+        $result = FileTypes::select('id', 'directory', 'title', 'extensions', 'max_file_size')->get();
+
+        return response()->json($result);
     }
 
 

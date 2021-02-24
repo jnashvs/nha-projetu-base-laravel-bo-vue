@@ -28,9 +28,9 @@ Route::group(['namespace' => 'Backoffice'], function()
 
         //Route::get('/file-types/create', 'FileTypesController@create')->name('create-file-types');
 
-        Route::get('/file-types/edit/{id}', 'FileTypesController@edit')->name('edit-file-types');
+        Route::get('/file-types/edit/{id?}/', 'FileTypesController@edit')->name('edit-file-types');
 
-        Route::get('/file-types/edit', 'FileTypesController@edit')->name('create-file-types');
+        //Route::get('/file-types/edit', 'FileTypesController@edit')->name('create-file-types');
 
         Route::post('/testpost', 'HomeController@testpost')->name('testpost');
     });

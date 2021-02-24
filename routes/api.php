@@ -25,5 +25,7 @@ Route::get('/files/all', 'Backoffice\FilesController@allFiles')->name('allFiles'
 //file types
 Route::post('/file-types/store', 'Backoffice\FileTypesController@store')->name('file-types-store');
 
+Route::get('/file-types/all', 'Backoffice\FileTypesController@getAll')->name('file-types-all');
+
 
 

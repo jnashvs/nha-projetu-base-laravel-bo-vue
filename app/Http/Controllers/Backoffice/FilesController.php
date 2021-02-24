@@ -10,7 +10,7 @@ use App\Models\Files;
 use function GuzzleHttp\json_encode;
 use Illuminate\Support\Facades\Storage;
 use JamesDordoy\LaravelVueDatatable\Http\Resources\DataTableCollectionResource;
-
+use App\Models\FileTypes;
 
 class FilesController extends Controller
 {
@@ -31,7 +31,9 @@ class FilesController extends Controller
      */
     public function index()
     {
-        return view('backoffice.files.add');
+        $result = FileTypes::select('id', 'directory')->get();
+
+        return view('backoffice.files.add', ['filetypes'=> $result]);
     }
 
     public function fileStore(Request $request)
@@ -69,11 +71,23 @@ class FilesController extends Controller
         
         $query = Files::eloquentQuery($sortBy, $orderBy, $searchValue);
 
-        $isActive = $request->input('isActive');
+        Log::info($request->input('isActive'));
 
-        if (isset($isActive)) {
-            $query->where("file_type_id", $isActive);
-        }
+        // if (isset($isActive)) {
+        //     $query->where("file_type_id", $isActive);
+        // }
+
+        // $query = Files::eloquentQuery($sortBy, $orderBy, $searchValue);
+
+        // $directory = $request->input('directory');
+
+        // Log::info($request->all());
+
+        // if (isset($directory)) {
+        //     $dir = FileTypes::select('id', 'directory')->firstWhere('directory', $directory);
+
+        //     $query->where("file_type_id", $dir->id);
+        // }
 
         $data = $query->paginate($length);
         

@@ -34,7 +34,16 @@ Vue.use(DataTable);
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+import VueRouter from 'vue-router'
+
+Vue.use(VueRouter)
+
+var router = new VueRouter({
+    mode: 'history',
+    routes: []
+});
 
 const app = new Vue({
+    router,
     el: '#app',
 });
