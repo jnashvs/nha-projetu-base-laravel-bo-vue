@@ -26,15 +26,15 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('dropzone-component', require('./components/Dropzone.vue').default);
 Vue.component('filetypes-component', require('./components/FileTypes.vue').default);
 
-import DataTable from 'laravel-vue-datatable';
-
-Vue.use(DataTable);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 import VueRouter from 'vue-router'
+
+import {ClientTable, Event} from 'vue-tables-2';
+Vue.use(ClientTable, Event);
 
 Vue.use(VueRouter)
 

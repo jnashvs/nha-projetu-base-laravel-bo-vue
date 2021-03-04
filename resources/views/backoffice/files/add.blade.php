@@ -4,8 +4,7 @@
     <div class="files-area">
         <dropzone-component>
         <select class="form-control" onchange="location = this.value;">
-                        <option value="/test1" selected="selected">All</option>
-
+                        <option value="#" selected="selected">Mudar de ficheiro</option>
                         @foreach($filetypes as $item)
                         <option value="{{route('files', ['directory'=>$item->directory])}}">{{$item->directory}}</option>
                         @endforeach

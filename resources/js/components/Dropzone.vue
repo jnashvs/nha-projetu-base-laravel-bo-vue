@@ -22,43 +22,57 @@
       </div>
       <!-- end active area -->
       <div class="col-sm-12">
-        <data-table ref="tablerefs" :columns="columns" :url="url">
-          <div slot="filters" slot-scope="{ tableFilters }">
-            <div class="row mb-2">
-              <div class="col-sm-6">
-                <div class="form-row">
-                  <div class="form-group">
-                    <button
-                      @click="addFileArea = true"
-                      type="button"
-                      class="btn btn-primary"
-                    >Add files</button>
-                  </div>
-                  <div class="form-group col-md-6">
-                    <slot></slot>
-                    <!-- aqui entra os select que são passados pelo slot -->
-                  </div>
-                </div>
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <div class="form-row">
+              <div class="form-group">
+                <button @click="addFileArea = true" type="button" class="btn btn-primary">Add files</button>
               </div>
-
-              <div class="col-sm-6">
-                <input
-                  name="name"
-                  class="form-control"
-                  v-model="tableFilters.search"
-                  placeholder="Search Table"
-                />
+              <div class="form-group col-md-6">
+                <slot></slot>
+                <!-- aqui entra os select que são passados pelo slot -->
               </div>
             </div>
           </div>
-        </data-table>
+
+          <div class="col-sm-6">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search Table"
+              v-model="tableData.search"
+              v-on:keyup.enter="getFiles()"
+            />
+          </div>
+        </div>
+
+        <datatable :columns="columns" :sortKey="sortKey" :sortOrders="sortOrders" @sort="sortBy">
+          <tbody>
+            <tr v-for="file in files" :key="file.id">
+              <td>{{file.id}}</td>
+              <td>
+                <a target="_blank" :href="'../'+file.path">{{file.path}}</a>
+              </td>
+              <td>{{file.created_at}}</td>
+              <td class="delete_td">
+                <button class="btn btn-danger btn-xs" style="padding: 0px 6px;">
+                  <i class="fa fa-times"></i>
+                </button>
+              </td>
+            </tr>
+            <tr v-if="files.length == 0">
+              <td class="text-center" colspan="100%">Não foram encontrados nenhum ficheiro</td>
+            </tr>
+          </tbody>
+        </datatable>
+        <pagination
+          :pagination="pagination"
+          @prev="getFiles(pagination.prevPageUrl)"
+          @next="getFiles(pagination.nextPageUrl)"
+        ></pagination>
+
+        <!-- end new TD -->
       </div>
-
-      <!-- <pre>
-{{data}}
-      </pre>-->
-
-      <!-- end table listing -->
     </div>
   </div>
 </template>
@@ -66,77 +80,79 @@
 <script>
 import vue2Dropzone from "vue2-dropzone";
 import "vue2-dropzone/dist/vue2Dropzone.min.css";
-import fileRightButton from "../components/fileRightButton.vue";
+import Datatable from "./Datatable.vue";
+import Pagination from "./Pagination.vue";
 
 export default {
   components: {
     vueDropzone: vue2Dropzone,
-    fileRightButton
+    datatable: Datatable,
+    pagination: Pagination
   },
   data: function() {
+    let sortOrders = {};
+    let columns = [
+      { width: "13%", label: "Id", name: "id" },
+      { width: "66%", label: "Path", name: "path" },
+      { width: "17%", label: "Data", name: "created_at" },
+      { width: "3%", label: "", name: "" }
+    ];
+    columns.forEach(column => {
+      sortOrders[column.name] = -1;
+    });
     return {
-      url: "http://127.0.0.1:8000/api/files/all",
+      //columns: ["id", "path", "size", "uri"],
+      data: [],
+      url: "/files/all",
       plus: "",
       dropzoneOptions: {
-        url: "http://127.0.0.1:8000/api/files/upload",
+        url: `http://127.0.0.1:8000/api/files/upload?path=${this.$route.query.directory}`,
         thumbnailWidth: 100,
         maxFilesize: 2,
         maxFiles: 10,
-        //acceptedFiles: [],
         acceptedFiles: this.extensionsFile,
         headers: { "My-Awesome-Header": "header value" }
         //addRemoveLinks: true
       },
-      data: {},
       fileTypes: {},
       activeFileType: {},
       extensionsFile: [],
       activeFileTypeId: "",
-      filters: {
-        isActive: this.$route.query.directory || 999
-      },
       addFileArea: false,
-      columns: [
-        {
-          label: "ID",
-          name: "id",
-          orderable: true
-        },
-        {
-          label: "Path",
-          name: "path",
-          orderable: true
-        },
-        {
-          label: "Size",
-          name: "size",
-          orderable: true
-        },
-        {
-          label: "",
-          name: "View",
-          orderable: false,
-          classes: {
-            btn: true,
-            "btn-primary": true,
-            "btn-sm": true
-          },
-          event: "click",
-          handler: this.displayRow,
-          component: fileRightButton
-        }
-      ],
-      selectedRow: {},
-      perPage: 1,
-      tableProps: {
-        search: "",
+      files: [],
+      columns: columns,
+      sortKey: "id",
+      sortOrders: sortOrders,
+      perPage: ["10", "20", "30"],
+      tableData: {
+        draw: 0,
         length: 10,
-        column: "id",
-        dir: "asc"
+        search: "",
+        column: 0,
+        dir: "desc",
+        file_type_slug: this.$route.query.directory
+      },
+      pagination: {
+        lastPage: "",
+        currentPage: "",
+        total: "",
+        lastPageUrl: "",
+        nextPageUrl: "",
+        prevPageUrl: "",
+        from: "",
+        to: ""
       }
     };
   },
   methods: {
+    filterResult() {
+      //Event.$emit('vue-tables.filter::mysearch', query);
+      console.log("search fired");
+    },
+    clickUri(data) {
+      console.log("click uri");
+    },
+    /*
     activeFileTypes(event) {
       var Id = event.target.value;
 
@@ -158,13 +174,12 @@ export default {
         this.dropzoneOptions.acceptedFiles = this.extensionsFile;
       }
 
-      //this.$set(this.dropzoneOptions,'acceptedFiles',this.extensionsFile);
-    },
+    },*/
     allFilesTypes() {
       var self = this;
 
       axios
-        .get("http://127.0.0.1:8000/api/file-types/all")
+        .get("/file-types/all")
         .then(function(response) {
           self.fileTypes = response.data;
         })
@@ -173,44 +188,68 @@ export default {
         });
     },
     completeEvent(response) {
-      this.allFiles();
-
-      // this.plus = this.plus == "/" ? "//" : "/";
-      // this.url = this.url + this.plus;
+      //this.allFiles();
+      console.log("upload completed");
     },
-    // sendingEvent(file, xhr, formData) {
+    // sendingEvent(file, xhr, formData) { // event from dropzone plugin
     //   formData.append("size", file.upload.total);
     //   console.log(JSON.stringify(file));
     // },
-    allFiles(options = this.tableProps) {
+    allFiles() {
       var self = this;
-
       axios
-        .get(this.url, {
-          params: options
-        })
+        .get(this.url, { params: this.params })
         .then(function(response) {
-          self.data = response;
+          self.data = response.data.data;
+
+          console.log(JSON.stringify(response.data));
         })
         .catch(function(error) {
           console.log(error);
         });
     },
-    reloadTable(tableProps) {
-      //this.allFiles(tableProps);
+    getFiles(url = "/files/all") {
+      this.tableData.draw++;
+      axios
+        .get(url, { params: this.tableData })
+        .then(response => {
+          let data = response.data;
+          console.log(data);
+          if (this.tableData.draw == data.draw) {
+            this.files = data.data.data;
+            this.configPagination(data.data);
+          }
+        })
+        .catch(errors => {
+          console.log(errors);
+        });
     },
-    displayRow(data) {
-      //console.log(JSON.stringify(data));
+    configPagination(data) {
+      this.pagination.lastPage = data.last_page;
+      this.pagination.currentPage = data.current_page;
+      this.pagination.total = data.total;
+      this.pagination.lastPageUrl = data.last_page_url;
+      this.pagination.nextPageUrl = data.next_page_url;
+      this.pagination.prevPageUrl = data.prev_page_url;
+      this.pagination.from = data.from;
+      this.pagination.to = data.to;
+    },
+    sortBy(key) {
+      if(key){
+        this.sortKey = key;
+        this.sortOrders[key] = this.sortOrders[key] * -1;
+        this.tableData.column = this.getIndex(this.columns, "name", key);
+        this.tableData.dir = this.sortOrders[key] === 1 ? "asc" : "desc";
+        this.getFiles();
+      }
+    },
+    getIndex(array, key, value) {
+      return array.findIndex(i => i[key] == value);
     }
   },
-  // computed: {
-  //   data() {
-  //     return this.data;
-  //   }
-  // },
   mounted() {
-    this.allFiles();
-    this.allFilesTypes();
+    this.getFiles();
+    //this.allFilesTypes();
   }
 };
 </script>

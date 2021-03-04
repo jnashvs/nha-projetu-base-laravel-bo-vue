@@ -7,10 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Models\Files;
-use function GuzzleHttp\json_encode;
-use Illuminate\Support\Facades\Storage;
-use JamesDordoy\LaravelVueDatatable\Http\Resources\DataTableCollectionResource;
 use App\Models\FileTypes;
+use App\Repositories\Repository;
 
 class FilesController extends Controller
 {
@@ -19,9 +17,12 @@ class FilesController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    protected $model;
+
+    public function __construct(Files $files)
     {
-        //$this->middleware('auth');
+       // set the model
+       $this->model = new Repository($files);
     }
 
     /**
@@ -40,14 +41,21 @@ class FilesController extends Controller
     {
         $file = $request->file('file');
 
-        if($file){
+        $result = FileTypes::select('id', 'directory')->firstWhere('directory', $request->input('path'));
+
+        if($file && $result){
+
+            $path = "files/$result->directory/";
 
             $file_name = Str::random().'-'.$file->getClientOriginalName();
-            $file->move(storage_path('files'), $file_name);
+            $res = $file->move(public_path($path), $file_name);
+
+            Log::info($res);
 
             $res = Files::create(
                 [
-                    'path' => $file_name,
+                    'path' => $path.$file_name,
+                    'file_type_id' => $result->id,
                     'size' => 0
                 ]
             );
@@ -64,34 +72,33 @@ class FilesController extends Controller
 
     public function allFiles(Request $request)
     {   
-        $length = $request->input('length');
-        $sortBy = $request->input('column');
-        $orderBy = $request->input('dir');
+        
+        $columns = ['id', 'path', 'file_type_slug'];
+        
+        $directory = $request->input('file_type_slug');
+        $column = $request->input('column'); //Index
+        $dir = $request->input('dir');
+        $order = $dir;
+        $paginate = true;
+        $query = null;
+
         $searchValue = $request->input('search');
+
+        if (isset($directory)) {
+            $dir = FileTypes::select('id', 'directory')->firstWhere('directory', $directory);
+
+            $query = $this->model->getModel()->where("file_type_id", $dir->id)->orderBy($columns[$column], $order);
+
+            if($searchValue){
+                $query->where(function($query) use ($searchValue){
+                    $query->where('path', 'like', '%'.$searchValue.'%');
+                });
+            }
+        }
+
+        $data = $this->model->all($query, $paginate);
         
-        $query = Files::eloquentQuery($sortBy, $orderBy, $searchValue);
-
-        Log::info($request->input('isActive'));
-
-        // if (isset($isActive)) {
-        //     $query->where("file_type_id", $isActive);
-        // }
-
-        // $query = Files::eloquentQuery($sortBy, $orderBy, $searchValue);
-
-        // $directory = $request->input('directory');
-
-        // Log::info($request->all());
-
-        // if (isset($directory)) {
-        //     $dir = FileTypes::select('id', 'directory')->firstWhere('directory', $directory);
-
-        //     $query->where("file_type_id", $dir->id);
-        // }
-
-        $data = $query->paginate($length);
-        
-        return new DataTableCollectionResource($data);
+        return ['data'=>$data, 'draw' => $request->input('draw')];
     }
 
 
