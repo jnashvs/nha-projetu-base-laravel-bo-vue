@@ -23,7 +23,7 @@ class Repository implements RepositoryInterface
         }
 
         if ($paginate) {
-            return $query->paginate(10);
+            return $query->paginate();
         }
 
         return $query->get();
@@ -43,13 +43,13 @@ class Repository implements RepositoryInterface
     }
 
     // remove record from the database
-    public function delete($id)
+    public function delete($id = null)
     {
         return $this->model->destroy($id);
     }
 
     // show the record with the given id
-    public function show($id)
+    public function find($id)
     {
         return $this->model->findOrFail($id);
     }

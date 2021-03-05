@@ -55,7 +55,7 @@
               </td>
               <td>{{file.created_at}}</td>
               <td class="delete_td">
-                <button class="btn btn-danger btn-xs" style="padding: 0px 6px;">
+                <button class="btn btn-danger btn-xs" style="padding: 0px 6px;" @click="deleteFile(file.id)">
                   <i class="fa fa-times"></i>
                 </button>
               </td>
@@ -101,7 +101,6 @@ export default {
       sortOrders[column.name] = -1;
     });
     return {
-      //columns: ["id", "path", "size", "uri"],
       data: [],
       url: "/files/all",
       plus: "",
@@ -145,13 +144,6 @@ export default {
     };
   },
   methods: {
-    filterResult() {
-      //Event.$emit('vue-tables.filter::mysearch', query);
-      console.log("search fired");
-    },
-    clickUri(data) {
-      console.log("click uri");
-    },
     /*
     activeFileTypes(event) {
       var Id = event.target.value;
@@ -188,33 +180,32 @@ export default {
         });
     },
     completeEvent(response) {
-      //this.allFiles();
       console.log("upload completed");
+
+      this.getFilesUpdateTable();
     },
     // sendingEvent(file, xhr, formData) { // event from dropzone plugin
     //   formData.append("size", file.upload.total);
     //   console.log(JSON.stringify(file));
     // },
-    allFiles() {
-      var self = this;
+    deleteFile(id){
+      console.log(id);
       axios
-        .get(this.url, { params: this.params })
-        .then(function(response) {
-          self.data = response.data.data;
-
-          console.log(JSON.stringify(response.data));
+        .delete(`/files/remove/${id}`)
+        .then(response => {
+          this.getFilesUpdateTable();
+          console.log(response.data);
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(errors => {
+          console.log(errors);
         });
     },
-    getFiles(url = "/files/all") {
+    getFiles(url = this.url) {
       this.tableData.draw++;
       axios
         .get(url, { params: this.tableData })
         .then(response => {
           let data = response.data;
-          console.log(data);
           if (this.tableData.draw == data.draw) {
             this.files = data.data.data;
             this.configPagination(data.data);
@@ -223,6 +214,12 @@ export default {
         .catch(errors => {
           console.log(errors);
         });
+    },
+    getFilesUpdateTable(){
+      this.plus = this.plus == "/" ? "//" : "/";
+      this.url = this.url + this.plus;
+
+      this.getFiles();
     },
     configPagination(data) {
       this.pagination.lastPage = data.last_page;
@@ -235,7 +232,7 @@ export default {
       this.pagination.to = data.to;
     },
     sortBy(key) {
-      if(key){
+      if (key) {
         this.sortKey = key;
         this.sortOrders[key] = this.sortOrders[key] * -1;
         this.tableData.column = this.getIndex(this.columns, "name", key);
@@ -249,7 +246,6 @@ export default {
   },
   mounted() {
     this.getFiles();
-    //this.allFilesTypes();
   }
 };
 </script>

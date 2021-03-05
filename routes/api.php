@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //files 
 Route::post('/files/upload', 'Backoffice\FilesController@fileStore')->name('uploadFiles');
 Route::get('/files/all', 'Backoffice\FilesController@allFiles')->name('allFiles');
+Route::delete('/files/remove/{id}', 'Backoffice\FilesController@removeFile')->name('removeFile');
 
 //file types
 Route::post('/file-types/store', 'Backoffice\FileTypesController@store')->name('file-types-store');

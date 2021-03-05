@@ -11,5 +11,5 @@ interface RepositoryInterface
 
     public function delete($id);
 
-    public function show($id);
+    public function find($id);
 }

@@ -2160,7 +2160,6 @@ __webpack_require__.r(__webpack_exports__);
       sortOrders[column.name] = -1;
     });
     return {
-      //columns: ["id", "path", "size", "uri"],
       data: [],
       url: "/files/all",
       plus: "",
@@ -2206,14 +2205,6 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    filterResult: function filterResult() {
-      //Event.$emit('vue-tables.filter::mysearch', query);
-      console.log("search fired");
-    },
-    clickUri: function clickUri(data) {
-      console.log("click uri");
-    },
-
     /*
     activeFileTypes(event) {
       var Id = event.target.value;
@@ -2239,43 +2230,48 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     completeEvent: function completeEvent(response) {
-      //this.allFiles();
       console.log("upload completed");
+      this.getFilesUpdateTable();
     },
     // sendingEvent(file, xhr, formData) { // event from dropzone plugin
     //   formData.append("size", file.upload.total);
     //   console.log(JSON.stringify(file));
     // },
-    allFiles: function allFiles() {
-      var self = this;
-      axios.get(this.url, {
-        params: this.params
-      }).then(function (response) {
-        self.data = response.data.data;
-        console.log(JSON.stringify(response.data));
-      })["catch"](function (error) {
-        console.log(error);
+    deleteFile: function deleteFile(id) {
+      var _this = this;
+
+      console.log(id);
+      axios["delete"]("/files/remove/".concat(id)).then(function (response) {
+        _this.getFilesUpdateTable();
+
+        console.log(response.data);
+      })["catch"](function (errors) {
+        console.log(errors);
       });
     },
     getFiles: function getFiles() {
-      var _this = this;
+      var _this2 = this;
 
-      var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "/files/all";
+      var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.url;
       this.tableData.draw++;
       axios.get(url, {
         params: this.tableData
       }).then(function (response) {
         var data = response.data;
-        console.log(data);
 
-        if (_this.tableData.draw == data.draw) {
-          _this.files = data.data.data;
+        if (_this2.tableData.draw == data.draw) {
+          _this2.files = data.data.data;
 
-          _this.configPagination(data.data);
+          _this2.configPagination(data.data);
         }
       })["catch"](function (errors) {
         console.log(errors);
       });
+    },
+    getFilesUpdateTable: function getFilesUpdateTable() {
+      this.plus = this.plus == "/" ? "//" : "/";
+      this.url = this.url + this.plus;
+      this.getFiles();
     },
     configPagination: function configPagination(data) {
       this.pagination.lastPage = data.last_page;
@@ -2303,7 +2299,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    this.getFiles(); //this.allFilesTypes();
+    this.getFiles();
   }
 });
 
@@ -41104,7 +41100,12 @@ var render = function() {
                           "button",
                           {
                             staticClass: "btn btn-danger btn-xs",
-                            staticStyle: { padding: "0px 6px" }
+                            staticStyle: { padding: "0px 6px" },
+                            on: {
+                              click: function($event) {
+                                return _vm.deleteFile(file.id)
+                              }
+                            }
                           },
                           [_c("i", { staticClass: "fa fa-times" })]
                         )
