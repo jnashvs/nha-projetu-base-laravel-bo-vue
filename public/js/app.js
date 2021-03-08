@@ -2166,9 +2166,8 @@ __webpack_require__.r(__webpack_exports__);
       dropzoneOptions: {
         url: "http://127.0.0.1:8000/api/files/upload?path=".concat(this.$route.query.directory),
         thumbnailWidth: 100,
-        maxFilesize: 2,
         maxFiles: 10,
-        acceptedFiles: this.extensionsFile,
+        //acceptedFiles: this.extensionsFile,
         headers: {
           "My-Awesome-Header": "header value"
         } //addRemoveLinks: true
@@ -2176,7 +2175,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       fileTypes: {},
       activeFileType: {},
-      extensionsFile: [],
+      extensionsFile: '',
       activeFileTypeId: "",
       addFileArea: false,
       files: [],
@@ -2221,12 +2220,19 @@ __webpack_require__.r(__webpack_exports__);
          this.dropzoneOptions.acceptedFiles = this.extensionsFile;
       }
      },*/
-    allFilesTypes: function allFilesTypes() {
-      var self = this;
-      axios.get("/file-types/all").then(function (response) {
-        self.fileTypes = response.data;
-      })["catch"](function (error) {
-        console.log(error);
+    findFileType: function findFileType() {
+      var _this = this;
+
+      axios.get("/file-types/".concat(this.$route.query.directory)).then(function (response) {
+        var list_extensions = JSON.parse(response.data.extensions);
+        console.log(response.data);
+        list_extensions.forEach(function (element) {
+          _this.extensionsFile += "".concat(element.name, ",");
+        });
+        _this.dropzoneOptions.acceptedFiles = _this.extensionsFile;
+        _this.dropzoneOptions.maxFilesize = response.data.max_file_size || 8;
+      })["catch"](function (errors) {
+        console.log(errors);
       });
     },
     completeEvent: function completeEvent(response) {
@@ -2238,11 +2244,11 @@ __webpack_require__.r(__webpack_exports__);
     //   console.log(JSON.stringify(file));
     // },
     deleteFile: function deleteFile(id) {
-      var _this = this;
+      var _this2 = this;
 
       console.log(id);
       axios["delete"]("/files/remove/".concat(id)).then(function (response) {
-        _this.getFilesUpdateTable();
+        _this2.getFilesUpdateTable();
 
         console.log(response.data);
       })["catch"](function (errors) {
@@ -2250,7 +2256,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     getFiles: function getFiles() {
-      var _this2 = this;
+      var _this3 = this;
 
       var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.url;
       this.tableData.draw++;
@@ -2259,11 +2265,13 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         var data = response.data;
 
-        if (_this2.tableData.draw == data.draw) {
-          _this2.files = data.data.data;
+        if (_this3.tableData.draw == data.draw) {
+          _this3.files = data.data.data;
 
-          _this2.configPagination(data.data);
+          _this3.configPagination(data.data);
         }
+
+        _this3.findFileType();
       })["catch"](function (errors) {
         console.log(errors);
       });

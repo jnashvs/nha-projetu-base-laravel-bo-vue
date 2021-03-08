@@ -107,15 +107,14 @@ export default {
       dropzoneOptions: {
         url: `http://127.0.0.1:8000/api/files/upload?path=${this.$route.query.directory}`,
         thumbnailWidth: 100,
-        maxFilesize: 2,
         maxFiles: 10,
-        acceptedFiles: this.extensionsFile,
+        //acceptedFiles: this.extensionsFile,
         headers: { "My-Awesome-Header": "header value" }
         //addRemoveLinks: true
       },
       fileTypes: {},
       activeFileType: {},
-      extensionsFile: [],
+      extensionsFile: '',
       activeFileTypeId: "",
       addFileArea: false,
       files: [],
@@ -167,16 +166,24 @@ export default {
       }
 
     },*/
-    allFilesTypes() {
-      var self = this;
-
+    findFileType(){
       axios
-        .get("/file-types/all")
-        .then(function(response) {
-          self.fileTypes = response.data;
+        .get(`/file-types/${this.$route.query.directory}`)
+        .then(response => {
+          
+          let list_extensions = JSON.parse(response.data.extensions);
+
+          console.log(response.data);
+
+          list_extensions.forEach(element => {
+            this.extensionsFile += `${element.name},`;
+          });
+
+          this.dropzoneOptions.acceptedFiles = this.extensionsFile;
+          this.dropzoneOptions.maxFilesize = response.data.max_file_size || 8;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(errors => {
+          console.log(errors);
         });
     },
     completeEvent(response) {
@@ -210,6 +217,7 @@ export default {
             this.files = data.data.data;
             this.configPagination(data.data);
           }
+          this.findFileType();
         })
         .catch(errors => {
           console.log(errors);

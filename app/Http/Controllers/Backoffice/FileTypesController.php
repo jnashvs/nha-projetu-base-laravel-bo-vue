@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\FileTypes;
 use Illuminate\Support\Facades\Log;
+use App\Repositories\Repository;
+use function GuzzleHttp\json_encode;
 
 class FileTypesController extends Controller
 {
@@ -14,8 +16,12 @@ class FileTypesController extends Controller
      *
      * @return void
      */
-    public function __construct()
+
+    private $filetypes;
+
+    public function __construct(FileTypes $filetypes)
     {
+        $this->filetypes = new Repository($filetypes);
         //$this->middleware('auth');
     }
 
@@ -57,6 +63,13 @@ class FileTypesController extends Controller
         $result = FileTypes::select('id', 'directory', 'title', 'extensions', 'max_file_size')->get();
 
         return response()->json($result);
+    }
+
+    public function getFileType($slug){
+
+        $res = $this->filetypes->getModel()->where('directory',$slug)->first();
+
+        return response()->json($res);
     }
 
 
