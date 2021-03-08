@@ -55,7 +55,11 @@
               </td>
               <td>{{file.created_at}}</td>
               <td class="delete_td">
-                <button class="btn btn-danger btn-xs" style="padding: 0px 6px;" @click="deleteFile(file.id)">
+                <button
+                  class="btn btn-danger btn-xs"
+                  style="padding: 0px 6px;"
+                  @click="deleteFile(file.id)"
+                >
                   <i class="fa fa-times"></i>
                 </button>
               </td>
@@ -107,14 +111,13 @@ export default {
       dropzoneOptions: {
         url: `http://127.0.0.1:8000/api/files/upload?path=${this.$route.query.directory}`,
         thumbnailWidth: 100,
-        maxFiles: 10,
-        //acceptedFiles: this.extensionsFile,
+        maxFiles: 15,
         headers: { "My-Awesome-Header": "header value" }
         //addRemoveLinks: true
       },
       fileTypes: {},
       activeFileType: {},
-      extensionsFile: '',
+      extensionsFile: "",
       activeFileTypeId: "",
       addFileArea: false,
       files: [],
@@ -143,59 +146,42 @@ export default {
     };
   },
   methods: {
-    /*
-    activeFileTypes(event) {
-      var Id = event.target.value;
-
-      var found = [];
-
-      this.fileTypes.forEach(element => {
-        if (element.id == Id) return (found = element);
-      });
-
-      if (found.extensions) {
-        var list_extensions = JSON.parse(found.extensions);
-
-        this.extensionsFile = [];
-
-        list_extensions.forEach(element => {
-          this.extensionsFile.push(element.name);
-        });
-
-        this.dropzoneOptions.acceptedFiles = this.extensionsFile;
-      }
-
-    },*/
-    findFileType(){
+    findFileType() {
       axios
         .get(`/file-types/${this.$route.query.directory}`)
         .then(response => {
-          
           let list_extensions = JSON.parse(response.data.extensions);
 
-          console.log(response.data);
+          console.log(response.data.title);
+
+          let e = "";
+          let max_size = response.data.max_file_size;
+          let directory_name = response.data.title;
 
           list_extensions.forEach(element => {
-            this.extensionsFile += `${element.name},`;
+            e += `${element.name},`;
           });
 
+          this.extensionsFile = e.slice(0, -1);
+
           this.dropzoneOptions.acceptedFiles = this.extensionsFile;
-          this.dropzoneOptions.maxFilesize = response.data.max_file_size || 8;
+          this.dropzoneOptions.maxFilesize = max_size || 8;
+          this.dropzoneOptions.dictDefaultMessage = `<p>Drop files here to upload</p> <p class="my-0"><b>Tamanho máximo:</b> ${max_size} Mb</p> <p class="my-0"><b>Extensões:</b> ${this.extensionsFile} </p> <p class="my-0"><b>Directório:</b> ${directory_name}</p>`;
+
         })
         .catch(errors => {
           console.log(errors);
         });
     },
     completeEvent(response) {
-      console.log("upload completed");
-
+      //console.log("upload completed");
       this.getFilesUpdateTable();
     },
     // sendingEvent(file, xhr, formData) { // event from dropzone plugin
     //   formData.append("size", file.upload.total);
     //   console.log(JSON.stringify(file));
     // },
-    deleteFile(id){
+    deleteFile(id) {
       console.log(id);
       axios
         .delete(`/files/remove/${id}`)
@@ -223,7 +209,7 @@ export default {
           console.log(errors);
         });
     },
-    getFilesUpdateTable(){
+    getFilesUpdateTable() {
       this.plus = this.plus == "/" ? "//" : "/";
       this.url = this.url + this.plus;
 

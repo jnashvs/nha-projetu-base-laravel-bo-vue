@@ -2127,6 +2127,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -2166,8 +2170,7 @@ __webpack_require__.r(__webpack_exports__);
       dropzoneOptions: {
         url: "http://127.0.0.1:8000/api/files/upload?path=".concat(this.$route.query.directory),
         thumbnailWidth: 100,
-        maxFiles: 10,
-        //acceptedFiles: this.extensionsFile,
+        maxFiles: 15,
         headers: {
           "My-Awesome-Header": "header value"
         } //addRemoveLinks: true
@@ -2175,7 +2178,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       fileTypes: {},
       activeFileType: {},
-      extensionsFile: '',
+      extensionsFile: "",
       activeFileTypeId: "",
       addFileArea: false,
       files: [],
@@ -2204,39 +2207,28 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    /*
-    activeFileTypes(event) {
-      var Id = event.target.value;
-       var found = [];
-       this.fileTypes.forEach(element => {
-        if (element.id == Id) return (found = element);
-      });
-       if (found.extensions) {
-        var list_extensions = JSON.parse(found.extensions);
-         this.extensionsFile = [];
-         list_extensions.forEach(element => {
-          this.extensionsFile.push(element.name);
-        });
-         this.dropzoneOptions.acceptedFiles = this.extensionsFile;
-      }
-     },*/
     findFileType: function findFileType() {
       var _this = this;
 
       axios.get("/file-types/".concat(this.$route.query.directory)).then(function (response) {
         var list_extensions = JSON.parse(response.data.extensions);
-        console.log(response.data);
+        console.log(response.data.title);
+        var e = "";
+        var max_size = response.data.max_file_size;
+        var directory_name = response.data.title;
         list_extensions.forEach(function (element) {
-          _this.extensionsFile += "".concat(element.name, ",");
+          e += "".concat(element.name, ",");
         });
+        _this.extensionsFile = e.slice(0, -1);
         _this.dropzoneOptions.acceptedFiles = _this.extensionsFile;
-        _this.dropzoneOptions.maxFilesize = response.data.max_file_size || 8;
+        _this.dropzoneOptions.maxFilesize = max_size || 8;
+        _this.dropzoneOptions.dictDefaultMessage = "<p>Drop files here to upload</p> <p class=\"my-0\"><b>Tamanho m\xE1ximo:</b> ".concat(max_size, " Mb</p> <p class=\"my-0\"><b>Extens\xF5es:</b> ").concat(_this.extensionsFile, " </p> <p class=\"my-0\"><b>Direct\xF3rio:</b> ").concat(directory_name, "</p>");
       })["catch"](function (errors) {
         console.log(errors);
       });
     },
     completeEvent: function completeEvent(response) {
-      console.log("upload completed");
+      //console.log("upload completed");
       this.getFilesUpdateTable();
     },
     // sendingEvent(file, xhr, formData) { // event from dropzone plugin
