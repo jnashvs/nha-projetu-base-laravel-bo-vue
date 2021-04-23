@@ -34,6 +34,13 @@ https://github.com/barryvdh/laravel-debugbar
 ## VUE JS DATA TABLES
 https://jamesdordoy.github.io/laravel-vue-datatable/laravel/controller-resource
 
+## SEO PACKAGE
+https://github.com/artesaos/seotools
+
+## SITE MAP
+https://packagist.org/packages/spatie/laravel-sitemap
+
+
 
 
 
