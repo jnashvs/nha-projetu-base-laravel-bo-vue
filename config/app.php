@@ -176,8 +176,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         //JamesDordoy\LaravelVueDatatable\Providers\LaravelVueDatatableServiceProvider::class,
         Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
-
-
     ],
 
     /*
@@ -231,7 +229,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         // seo aliases
         'SEO' => Artesaos\SEOTools\Facades\SEOTools::class,
-        'SEOMeta'   => Artesaos\SEOTools\Facades\SEOMeta::class,
+        'SEOMeta' => Artesaos\SEOTools\Facades\SEOMeta::class,
+        // image cache
+        'Image' => Intervention\Image\Facades\Image::class,
 
     ],
 

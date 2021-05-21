@@ -101,6 +101,11 @@
                 <br> vue js example
 
                 <example-component> </example-component>
+
+                aqui vem imge
+
+                <img src="{{ img_cache('ctnogBVwSUcMhvcF-residencia.jpeg', 'large') }}" alt="src img 333">
+                
             </div>
         </div>
 

@@ -40,6 +40,9 @@ https://github.com/artesaos/seotools
 ## SITE MAP
 https://packagist.org/packages/spatie/laravel-sitemap
 
+## IMAGE CACHE - SPATIE
+https://github.com/Intervention/imagecache
+
 
 
 
