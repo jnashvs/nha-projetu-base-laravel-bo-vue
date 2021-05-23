@@ -25,6 +25,23 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('dropzone-component', require('./components/Dropzone.vue').default);
 Vue.component('filetypes-component', require('./components/FileTypes.vue').default);
+Vue.component('my-input', require('./components/MyInput.vue').default);
+Vue.component('bo-file-input', require('./components/form/BoFileInput.vue').default);
+
+import Multiselect from "vue-multiselect";
+
+// register globally
+Vue.component("multiselect", Multiselect);
+
+// image v-lazy-load
+import VueLazyload from 'vue-lazyload'
+
+Vue.use(VueLazyload, {
+  preLoad: 1.3,
+//   error: errorimage,
+//   loading: loadimage,
+  attempt: 1
+})
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

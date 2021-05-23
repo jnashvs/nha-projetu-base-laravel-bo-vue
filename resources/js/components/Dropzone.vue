@@ -167,7 +167,6 @@ export default {
           this.dropzoneOptions.acceptedFiles = this.extensionsFile;
           this.dropzoneOptions.maxFilesize = max_size || 8;
           this.dropzoneOptions.dictDefaultMessage = `<p>Drop files here to upload</p> <p class="my-0"><b>Tamanho máximo:</b> ${max_size} Mb</p> <p class="my-0"><b>Extensões:</b> ${this.extensionsFile} </p> <p class="my-0"><b>Directório:</b> ${directory_name}</p>`;
-
         })
         .catch(errors => {
           console.log(errors);

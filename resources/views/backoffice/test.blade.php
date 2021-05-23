@@ -3,21 +3,21 @@
 @section('content')
 <div class="container">
     <div class="row">
-    @open(['route' => 'testpost', 'method' => 'POST', 'id' => 'users-search-form'])
+        @open(['route' => 'testpost', 'method' => 'POST', 'id' => 'users-search-form'])
         @text('login')
-        @email('email')
-        @php($options = ['foo' => 'Foo', 'bar' => 'Bar', 'baz' => 'Baz'])
 
-        <!-- Simple input -->
-        @select('select', null, $options, null, ['custom' => true])
+        <!-- <filetypes-component></filetypes-component> -->
 
-        vue select
+        <!-- <my-input init-postcode="" select-value=""></my-input> -->
 
-        <filetypes-component></filetypes-component>
+<div class="row">
+            <bo-file-input bo-file-input="" placeholder="Imagem candidato" input-name="candidatos_img" directory="candidatos" />
 
+</div>
+<br>
         @textarea('text')
-        @checkbox('remember_me', null, 1, null, ['switch' => true, 'inline' => true])
-        @submit('Login')
+
+        @submit('Submit form')
         @close
 
     </div>

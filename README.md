@@ -31,9 +31,6 @@ https://adminlte.io/docs/2.4/installation
 
 https://github.com/barryvdh/laravel-debugbar
 
-## VUE JS DATA TABLES
-https://jamesdordoy.github.io/laravel-vue-datatable/laravel/controller-resource
-
 ## SEO PACKAGE
 https://github.com/artesaos/seotools
 
@@ -43,6 +40,9 @@ https://packagist.org/packages/spatie/laravel-sitemap
 ## IMAGE CACHE - SPATIE
 https://github.com/Intervention/imagecache
 
+## vue lazy loading
+
+https://github.com/hilongjw/vue-lazyload#installation
 
 
 
