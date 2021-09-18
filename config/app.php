@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         //JamesDordoy\LaravelVueDatatable\Providers\LaravelVueDatatableServiceProvider::class,
         Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
+        App\Providers\HelperServiceProvider::class,
     ],
 
     /*

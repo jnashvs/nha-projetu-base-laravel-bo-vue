@@ -120,9 +120,10 @@ export default {
     onSubmit(){
       console.log(JSON.stringify(this.form));
       axios
-        .post('http://127.0.0.1:8000/api/file-types/store', this.form)
+        .post('/file-types/store/', this.form)
         .then(function(response) {
           console.log(response)
+          console.log('file types well created');
         })
         .catch(e => {
           // if (errors.response.status == 422) {

@@ -2168,7 +2168,7 @@ __webpack_require__.r(__webpack_exports__);
       url: "/files/all",
       plus: "",
       dropzoneOptions: {
-        url: "http://127.0.0.1:8000/api/files/upload?path=".concat(this.$route.query.directory),
+        url: "/api/files/upload?path=".concat(this.$route.query.directory),
         thumbnailWidth: 100,
         maxFiles: 15,
         headers: {
@@ -2489,8 +2489,9 @@ Vue.component("multiselect", vue_multiselect__WEBPACK_IMPORTED_MODULE_0___defaul
     },
     onSubmit: function onSubmit() {
       console.log(JSON.stringify(this.form));
-      axios.post('http://127.0.0.1:8000/api/file-types/store', this.form).then(function (response) {
+      axios.post('/file-types/store/', this.form).then(function (response) {
         console.log(response);
+        console.log('file types well created');
       })["catch"](function (e) {// if (errors.response.status == 422) {
         //     this.errors = errors.response.data.errors;
         // } else {
@@ -2688,7 +2689,7 @@ __webpack_require__.r(__webpack_exports__);
       url: "/files/all",
       plus: "",
       dropzoneOptions: {
-        url: "http://127.0.0.1:8000/api/files/upload?path=".concat(this.directory),
+        url: "/api/files/upload?path=".concat(this.directory),
         thumbnailWidth: 100,
         maxFiles: 15,
         headers: {
@@ -68292,8 +68293,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/jorgevarela/Documents/nha-projetu-base-laravel-bo-vue/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/jorgevarela/Documents/nha-projetu-base-laravel-bo-vue/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/jorgevarela/nha-projetu-base-laravel-bo-vue/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/jorgevarela/nha-projetu-base-laravel-bo-vue/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

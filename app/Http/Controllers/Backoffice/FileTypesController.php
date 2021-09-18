@@ -8,6 +8,8 @@ use App\Models\FileTypes;
 use Illuminate\Support\Facades\Log;
 use App\Repositories\Repository;
 use function GuzzleHttp\json_encode;
+use Illuminate\Support\Facades\File;
+use App\Http\Requests\Backoffice\FileTypesRequest;
 
 class FileTypesController extends Controller
 {
@@ -35,7 +37,14 @@ class FileTypesController extends Controller
         return "index";
     }
 
-    public function store(Request $request){
+    public function store(FileTypesRequest $request){
+
+        $dir_path = public_path()."/files/{$request->input('directory')}";
+
+        if(!File::exists($dir_path)){
+            File::makeDirectory($dir_path, 0777, true, true);
+        }
+
         $res = FileTypes::updateOrCreate(
             ['id'=>$request->input('id'), 'directory' => $request->input('directory'), 'title' => $request->input('title'),
             'extensions' => json_encode($request->input('extensions')), 'max_file_size' => $request->input('max_file_size')]

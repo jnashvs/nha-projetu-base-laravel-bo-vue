@@ -153,7 +153,7 @@ export default {
       url: `/files/all`,
       plus: "",
       dropzoneOptions: {
-        url: `http://127.0.0.1:8000/api/files/upload?path=${this.directory}`,
+        url: `/api/files/upload?path=${this.directory}`,
         thumbnailWidth: 100,
         maxFiles: 15,
         headers: { "My-Awesome-Header": "header value" }

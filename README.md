@@ -44,6 +44,10 @@ https://github.com/Intervention/imagecache
 
 https://github.com/hilongjw/vue-lazyload#installation
 
+## linkar a pasta files ao storage
+localmente: ln -s storage/files public/files/
+online server: 
+
 
 
 

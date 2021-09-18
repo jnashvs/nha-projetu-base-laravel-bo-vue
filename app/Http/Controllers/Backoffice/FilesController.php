@@ -104,10 +104,7 @@ class FilesController extends Controller
     {
 
         $res = $this->files->find($id);
-
-        // $res = $request->all();
-
-        // Log::info($res);
+        
         $deleted = $this->files->delete($res->id);
 
         if (file_exists(public_path($res->path))) {
@@ -119,13 +116,7 @@ class FilesController extends Controller
             dd('File does not exists.');
             $files = "Delete process error";
         }
-
-        // if($deleted){
-        //     Storage::delete($res->path);
-        //     $files = "Delete process success";
-        // }else{
-        //     $files = "Delete process error";
-        // }
+        
 
         return json_encode($files);
     }

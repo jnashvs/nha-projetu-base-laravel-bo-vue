@@ -1,4 +1,4 @@
-<li class="nav-item has-treeview menu-open">
+<!-- <li class="nav-item has-treeview menu-open">
     <a href="#" class="nav-link active">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>
@@ -38,4 +38,16 @@
             <span class="right badge badge-danger">New</span>
         </p>
     </a>
+</li> -->
+
+@foreach(backoffice_menus() as $key => $menu)
+
+<li class="nav-item">
+    <a href="{{$menu['route']}}" class="nav-link">
+        <i class="{{$menu['icon']}}"></i>
+        <p>
+            {{$menu['title']}}
+        </p>
+    </a>
 </li>
+@endforeach

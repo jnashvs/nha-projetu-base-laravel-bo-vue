@@ -25,6 +25,8 @@ class HomeController extends Controller
     public function index()
     {
         return view('backoffice.home');
+
+        //return view('backoffice.banner.edit')->with('banner', $model);
     }
 
     public function testpost(Request $request)
