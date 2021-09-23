@@ -6,8 +6,13 @@
           <div class="modal-container">
             <div class="modal-header">
               <!-- <slot name="header"></slot> -->
-              <p class="my-auto"><b>Ficheiro</b> <span>{{directory_name}}</span></p>
-              <button class="btn btn-light" @click="$emit('close')"><span aria-hidden="true">×</span></button>
+              <p class="my-auto">
+                <b>Ficheiro</b>
+                <span>{{directory_name}}</span>
+              </p>
+              <button class="btn btn-light" @click="$emit('close')">
+                <span aria-hidden="true">×</span>
+              </button>
             </div>
 
             <div class="modal-body">
@@ -16,7 +21,7 @@
                 <div class="col-sm-12" v-if="addFileArea">
                   <div class="card">
                     <div class="card-header">
-                      <label for class="mr-auto">Add files here</label>
+                      <label for class="mr-auto">Adicionar ficheiro(s)</label>
                       <!-- <button class="ml-auto pull-right" @click="cancelUpload">Cancel upload</button> -->
                     </div>
 
@@ -37,11 +42,9 @@
                     <div class="col-sm-6">
                       <div class="form-row">
                         <div class="form-group">
-                          <a
-                            @click="addFileArea = true"
-                            type="button"
-                            class="btn btn-primary"
-                          ><i class="fa fa-plus"></i> Adicionar</a>
+                          <a @click="addFileArea = true" type="button" class="btn btn-primary">
+                            <i class="fa fa-plus"></i> Adicionar
+                          </a>
                         </div>
                         <div class="form-group col-md-6">
                           <slot></slot>
@@ -62,7 +65,9 @@
                           aria-describedby="basic-addon2"
                         />
                         <div class="input-group-append">
-                          <a class="input-group-text btn btn-primary" @click="getFiles()"><i class="fa fa-search" aria-hidden="true"></i></a>
+                          <a class="input-group-text btn btn-primary" @click="getFiles()">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -77,7 +82,7 @@
                     <tbody>
                       <tr v-for="file in files" :key="file.id">
                         <td>
-                                <img v-lazy="'/'+file.path" width="50px" height="50px">
+                          <img v-lazy="'/'+file.path" width="50px" height="50px" />
                         </td>
                         <td>
                           <a target="_blank" :href="'../'+file.path">{{file.path}}</a>
@@ -94,7 +99,10 @@
                         </td>
                       </tr>
                       <tr v-if="files.length == 0">
-                        <td class="text-center" colspan="100%">Não foram encontrados nenhum ficheiro</td>
+                        <td class="text-center" colspan="100%">
+                          <p>Não foram encontrados nenhum ficheiro</p>
+                          <p>Por favor selecione um Directório.</p>
+                        </td>
                       </tr>
                     </tbody>
                   </datatable>
@@ -110,7 +118,6 @@
 
               <!-- end modal -->
             </div>
-
           </div>
         </div>
       </div>
@@ -159,7 +166,7 @@ export default {
         headers: { "My-Awesome-Header": "header value" }
         //addRemoveLinks: true
       },
-      directory_name: '',
+      directory_name: "",
       fileTypes: {},
       activeFileType: {},
       extensionsFile: "",
@@ -202,7 +209,7 @@ export default {
           let e = "";
           let max_size = response.data.max_file_size;
           let directory_name = response.data.title;
-          this.directory_name= directory_name;
+          this.directory_name = directory_name;
 
           list_extensions.forEach(element => {
             e += `${element.name},`;

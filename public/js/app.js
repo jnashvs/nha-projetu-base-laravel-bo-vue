@@ -2131,6 +2131,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -2148,7 +2153,11 @@ __webpack_require__.r(__webpack_exports__);
       label: "Id",
       name: "id"
     }, {
-      width: "66%",
+      width: "10%",
+      label: "Image",
+      name: "image"
+    }, {
+      width: "65%",
       label: "Path",
       name: "path"
     }, {
@@ -2212,7 +2221,6 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get("/file-types/".concat(this.$route.query.directory)).then(function (response) {
         var list_extensions = JSON.parse(response.data.extensions);
-        console.log(response.data.title);
         var e = "";
         var max_size = response.data.max_file_size;
         var directory_name = response.data.title;
@@ -2221,7 +2229,7 @@ __webpack_require__.r(__webpack_exports__);
         });
         _this.extensionsFile = e.slice(0, -1);
         _this.dropzoneOptions.acceptedFiles = _this.extensionsFile;
-        _this.dropzoneOptions.maxFilesize = max_size || 8;
+        _this.dropzoneOptions.maxFilesize = max_size || 800;
         _this.dropzoneOptions.dictDefaultMessage = "<p>Drop files here to upload</p> <p class=\"my-0\"><b>Tamanho m\xE1ximo:</b> ".concat(max_size, " Mb</p> <p class=\"my-0\"><b>Extens\xF5es:</b> ").concat(_this.extensionsFile, " </p> <p class=\"my-0\"><b>Direct\xF3rio:</b> ").concat(directory_name, "</p>");
       })["catch"](function (errors) {
         console.log(errors);
@@ -2593,6 +2601,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2645,7 +2660,7 @@ __webpack_require__.r(__webpack_exports__);
         } //addRemoveLinks: true
 
       },
-      directory_name: '',
+      directory_name: "",
       fileTypes: {},
       activeFileType: {},
       extensionsFile: "",
@@ -43364,7 +43379,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("Add files")]
+                    [_vm._v("Adicionar ficheiro(s)")]
                   )
                 ]),
                 _vm._v(" "),
@@ -43430,11 +43445,23 @@ var render = function() {
                       _c("td", [_vm._v(_vm._s(file.id))]),
                       _vm._v(" "),
                       _c("td", [
+                        _c("img", {
+                          directives: [
+                            {
+                              name: "lazy",
+                              rawName: "v-lazy",
+                              value: file.path,
+                              expression: "file.path"
+                            }
+                          ],
+                          attrs: { width: "50px", height: "50px" }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
                         _c(
                           "a",
-                          {
-                            attrs: { target: "_blank", href: "../" + file.path }
-                          },
+                          { attrs: { target: "_blank", href: file.path } },
                           [_vm._v(_vm._s(file.path))]
                         )
                       ]),
@@ -43467,7 +43494,15 @@ var render = function() {
                             staticClass: "text-center",
                             attrs: { colspan: "100%" }
                           },
-                          [_vm._v("Não foram encontrados nenhum ficheiro")]
+                          [
+                            _c("p", [
+                              _vm._v("Não foram encontrados nenhum ficheiro")
+                            ]),
+                            _vm._v(" "),
+                            _c("p", [
+                              _vm._v("Por favor selecione um Directório.")
+                            ])
+                          ]
                         )
                       ])
                     : _vm._e()
@@ -43501,7 +43536,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
       _c("label", { staticClass: "mr-auto", attrs: { for: "" } }, [
-        _vm._v("Add files here")
+        _vm._v("Adicionar ficheiro(s)")
       ])
     ])
   }
@@ -43698,7 +43733,7 @@ var render = function() {
                             _c(
                               "label",
                               { staticClass: "mr-auto", attrs: { for: "" } },
-                              [_vm._v("Add files here")]
+                              [_vm._v("Adicionar ficheiro(s)")]
                             )
                           ]),
                           _vm._v(" "),
@@ -43743,7 +43778,7 @@ var render = function() {
                                 },
                                 [
                                   _c("i", { staticClass: "fa fa-plus" }),
-                                  _vm._v(" Adicionar")
+                                  _vm._v(" Adicionar\n                        ")
                                 ]
                               )
                             ]),
@@ -43905,9 +43940,17 @@ var render = function() {
                                         attrs: { colspan: "100%" }
                                       },
                                       [
-                                        _vm._v(
-                                          "Não foram encontrados nenhum ficheiro"
-                                        )
+                                        _c("p", [
+                                          _vm._v(
+                                            "Não foram encontrados nenhum ficheiro"
+                                          )
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("p", [
+                                          _vm._v(
+                                            "Por favor selecione um Directório."
+                                          )
+                                        ])
                                       ]
                                     )
                                   ])

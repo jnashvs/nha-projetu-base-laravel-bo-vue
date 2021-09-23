@@ -50,9 +50,9 @@ class FilesController extends Controller
 
         if ($file && $result) {
 
-            $path = "files/$result->directory/";
+            $path = "/files/$result->directory/";
 
-            $file_name = Str::random() . '-' . $file->getClientOriginalName();
+            $file_name = Str::random(4) . '-' . $file->getClientOriginalName();
             $res = $file->move(public_path($path), $file_name);
 
             $res = $this->files->create(

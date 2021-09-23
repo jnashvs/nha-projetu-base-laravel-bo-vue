@@ -5,7 +5,7 @@
       <div class="col-sm-12" v-if="addFileArea">
         <div class="card">
           <div class="card-header">
-            <label for class="mr-auto">Add files here</label>
+            <label for class="mr-auto">Adicionar ficheiro(s)</label>
             <!-- <button class="ml-auto pull-right" @click="cancelUpload">Cancel upload</button> -->
           </div>
 
@@ -26,7 +26,7 @@
           <div class="col-sm-6">
             <div class="form-row">
               <div class="form-group">
-                <button @click="addFileArea = true" type="button" class="btn btn-primary">Add files</button>
+                <button @click="addFileArea = true" type="button" class="btn btn-primary">Adicionar ficheiro(s)</button>
               </div>
               <div class="form-group col-md-6">
                 <slot></slot>
@@ -51,7 +51,10 @@
             <tr v-for="file in files" :key="file.id">
               <td>{{file.id}}</td>
               <td>
-                <a target="_blank" :href="'../'+file.path">{{file.path}}</a>
+                  <img v-lazy="file.path" width="50px" height="50px">
+              </td>
+              <td>
+                <a target="_blank" :href="file.path">{{file.path}}</a>
               </td>
               <td>{{file.created_at}}</td>
               <td class="delete_td">
@@ -65,7 +68,9 @@
               </td>
             </tr>
             <tr v-if="files.length == 0">
-              <td class="text-center" colspan="100%">Não foram encontrados nenhum ficheiro</td>
+              <td class="text-center" colspan="100%">
+              <p>Não foram encontrados nenhum ficheiro</p>
+              <p>Por favor selecione um Directório.</p> </td>
             </tr>
           </tbody>
         </datatable>
@@ -97,7 +102,8 @@ export default {
     let sortOrders = {};
     let columns = [
       { width: "13%", label: "Id", name: "id" },
-      { width: "66%", label: "Path", name: "path" },
+      { width: "10%", label: "Image", name: "image" },
+      { width: "65%", label: "Path", name: "path" },
       { width: "17%", label: "Data", name: "created_at" },
       { width: "3%", label: "", name: "" }
     ];
@@ -152,8 +158,6 @@ export default {
         .then(response => {
           let list_extensions = JSON.parse(response.data.extensions);
 
-          console.log(response.data.title);
-
           let e = "";
           let max_size = response.data.max_file_size;
           let directory_name = response.data.title;
@@ -165,8 +169,9 @@ export default {
           this.extensionsFile = e.slice(0, -1);
 
           this.dropzoneOptions.acceptedFiles = this.extensionsFile;
-          this.dropzoneOptions.maxFilesize = max_size || 8;
+          this.dropzoneOptions.maxFilesize = max_size || 800;
           this.dropzoneOptions.dictDefaultMessage = `<p>Drop files here to upload</p> <p class="my-0"><b>Tamanho máximo:</b> ${max_size} Mb</p> <p class="my-0"><b>Extensões:</b> ${this.extensionsFile} </p> <p class="my-0"><b>Directório:</b> ${directory_name}</p>`;
+
         })
         .catch(errors => {
           console.log(errors);
