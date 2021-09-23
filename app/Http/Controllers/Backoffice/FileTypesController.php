@@ -9,7 +9,10 @@ use Illuminate\Support\Facades\Log;
 use App\Repositories\Repository;
 use function GuzzleHttp\json_encode;
 use Illuminate\Support\Facades\File;
-use App\Http\Requests\Backoffice\FileTypesRequest;
+use App\Http\Requests\Backoffice\FileTypeRequest;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
+use App\Http\Requests\Backoffice\FilesTypeRequest;
 
 class FileTypesController extends Controller
 {
@@ -21,10 +24,15 @@ class FileTypesController extends Controller
 
     private $filetypes;
 
-    public function __construct(FileTypes $filetypes)
+    private $SUCESS_CREATED = "Dados criado com sucesso";
+
+    private $SUCESS_UPDATED = "Dados atualizado com sucesso";
+
+    private $SUCESS_REMOVED = "Dados removido com sucesso";
+
+    public function __construct(FileTypes $model)
     {
-        $this->filetypes = new Repository($filetypes);
-        //$this->middleware('auth');
+        $this->model = new Repository($model);
     }
 
     /**
@@ -33,54 +41,82 @@ class FileTypesController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
-    public function index(){
-        return "index";
+    public function index()
+    {
+        $fileTypes = $this->model->all();
+
+        return view('backoffice.file-types.index', compact('fileTypes'));
     }
 
-    public function store(FileTypesRequest $request){
+    public function store(FilesTypeRequest $request)
+    {
+        //Log::info($request->all());
+        $dados = $request->except('_token');
 
-        $dir_path = public_path()."/files/{$request->input('directory')}";
+        $all = Session::all();
 
-        if(!File::exists($dir_path)){
-            File::makeDirectory($dir_path, 0777, true, true);
+        $old_dir_path = public_path() . "/files/{$all['old_dir']}/";
+        $dir_path = public_path() . "/files/{$request->input('directory')}/";
+
+        if ($dados['id'] == NULL) {
+            $this->model->create($dados);
+
+            if (!File::exists($dir_path)) {
+                File::makeDirectory($dir_path, 0777, true, true);
+                $msg = $this->SUCESS_CREATED;
+            }
+        } else {
+            if (rename($old_dir_path, $dir_path)) {
+                $this->model->update($dados, $dados['id']);
+                $msg = $this->SUCESS_UPDATED;
+            }
         }
 
-        $res = FileTypes::updateOrCreate(
-            ['id'=>$request->input('id'), 'directory' => $request->input('directory'), 'title' => $request->input('title'),
-            'extensions' => json_encode($request->input('extensions')), 'max_file_size' => $request->input('max_file_size')]
-        );
-
-        return response()->json($res);
+        return redirect()->route('file-types')->with('status', $msg);
     }
 
-    public function edit($id = null){
+    public function edit(FileTypes $filetypes, $id=null)
+    {
+        if ($id) {
+            
+            $filetypes = $this->model->find($id);
+            $filetypes->extensions = json_decode($filetypes->extensions);
 
-        if($id){
-            $result = FileTypes::select('id', 'directory', 'title', 'extensions', 'max_file_size')->firstWhere('id', $id);
-
-            $result->extensions = json_decode($result->extensions);
-
-            return view('backoffice.file-types.edit', ['result'=> $result]);
-
-        }else{
-            return view('backoffice.file-types.add');
+            Session::put('old_dir', $filetypes->directory); //otimizar essa linha
         }
-
+        
+        return view('backoffice.file-types.edit')->with('filetypes', $filetypes);
     }
 
-    public function getAll(){
+    public function getAll()
+    {
         $result = FileTypes::select('id', 'directory', 'title', 'extensions', 'max_file_size')->get();
 
         return response()->json($result);
     }
 
-    public function getFileType($slug){
+    public function getFileType($slug)
+    {
 
-        $res = $this->filetypes->getModel()->where('directory',$slug)->first();
+        $res = $this->model->getModel()->where('directory', $slug)->first();
 
         return response()->json($res);
     }
 
+    public function delete(Request $request)
+    {        
+        $dir = $request->input('directory');
+        $id = $request->input('id');
 
+        try {
+            $res = $this->model->delete($id);
+            if ($res && $dir) {
+                File::deleteDirectory(public_path() . "/files/{$dir}");
+            }
+        } catch (\Throwable $th) {
+            dd($th);
+        }
 
+        return redirect()->route('file-types')->with('status', $this->SUCESS_REMOVED);
+    }
 }

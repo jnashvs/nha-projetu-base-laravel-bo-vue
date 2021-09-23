@@ -32920,6 +32920,10 @@ a.text-muted:hover {
   color: #ced4da;
 }@charset "UTF-8";
 
+.backoffice-style small.bo-campos-obrigatorios {
+  color: red;
+}
+
 /*!
  * Bootstrap v4.6.0 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors

@@ -4,13 +4,35 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use function GuzzleHttp\json_decode;
 
 class FileTypes extends Model
 {
-    protected $fillable = ['directory', 'title', 'extensions', 'max_file_size'];
+    protected $fillable = ['id', 'directory', 'title', 'extensions', 'max_file_size'];
+
+    protected $casts = [
+        'created_at' => 'datetime:d/m/Y',
+        'updated_at' => 'datetime:d/m/Y',
+    ];
+
+    private $_EXTENSIONS;
 
     public function files() : HasMany
     {
         return $this->hasMany(Files::class);
+    }
+
+    public function getTypes(){
+
+        foreach ($this->getExtensionsDecoded() as $key => $value){
+            $plus = count($this->getExtensionsDecoded()) > ++$key ? ', ' : '';
+            $this->_EXTENSIONS .= $value->name.$plus;
+        }
+
+        return $this->_EXTENSIONS;
+    }
+
+    public function getExtensionsDecoded(){
+        return json_decode($this->extensions);
     }
 }

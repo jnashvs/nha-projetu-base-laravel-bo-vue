@@ -48,6 +48,9 @@ https://github.com/hilongjw/vue-lazyload#installation
 localmente: ln -s storage/files public/files/
 online server: 
 
+## breadcrumb
+https://pineco.de/lightweight-breadcrumbs-in-laravel/
+
 
 
 

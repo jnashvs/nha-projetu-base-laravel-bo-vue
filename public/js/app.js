@@ -2379,35 +2379,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
  // register globally
 
 Vue.component("multiselect", vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default.a);
@@ -2417,16 +2388,13 @@ Vue.component("multiselect", vue_multiselect__WEBPACK_IMPORTED_MODULE_0___defaul
     Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default.a
   },
   props: {
-    cancelurl: {
-      type: String,
-      required: true
-    },
+    inputName: String,
     data: {//type: Object
-    }
+    },
+    errors: {}
   },
   data: function data() {
     return {
-      errors: [],
       value: [],
       options: [{
         name: "image/*",
@@ -2463,18 +2431,10 @@ Vue.component("multiselect", vue_multiselect__WEBPACK_IMPORTED_MODULE_0___defaul
         code: "csv"
       }],
       form: {
-        id: '',
-        directory: '',
-        title: '',
-        extensions: '',
-        max_file_size: ''
+        extensions: ''
       },
       emptyForm: {
-        id: '',
-        directory: '',
-        title: '',
-        extensions: '',
-        max_file_size: ''
+        extensions: ''
       }
     };
   },
@@ -2486,24 +2446,12 @@ Vue.component("multiselect", vue_multiselect__WEBPACK_IMPORTED_MODULE_0___defaul
       };
       this.options.push(tag);
       this.value.push(tag);
-    },
-    onSubmit: function onSubmit() {
-      console.log(JSON.stringify(this.form));
-      axios.post('/file-types/store/', this.form).then(function (response) {
-        console.log(response);
-        console.log('file types well created');
-      })["catch"](function (e) {// if (errors.response.status == 422) {
-        //     this.errors = errors.response.data.errors;
-        // } else {
-        //   console.log(errors.response.status);
-        // }
-      });
-      this.form = this.emptyForm;
     }
   },
   mounted: function mounted() {
     if (this.data) {
       this.form = JSON.parse(this.data);
+      console.log(this.form);
     }
   }
 });
@@ -2987,18 +2935,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_ModalFiles_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/ModalFiles.vue */ "./resources/js/components/ModalFiles.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -43638,200 +43574,68 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "file-types-container" }, [
-    _c(
-      "form",
-      {
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.onSubmit($event)
-          }
-        }
-      },
-      [
-        _c("div", { staticClass: "form-group row" }, [
-          _c(
-            "label",
-            {
-              staticClass: "col-sm-2 col-form-label",
-              attrs: { for: "staticEmail" }
+  return _c("div", [
+    _c("div", { staticClass: "form-group row" }, [
+      _c("input", {
+        attrs: { type: "hidden", name: _vm.inputName },
+        domProps: { value: JSON.stringify(_vm.form.extensions) }
+      })
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        {
+          staticClass: "col-sm-2 col-form-label",
+          attrs: { for: "staticEmail" }
+        },
+        [_vm._v("Extensão")]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col-sm-6" },
+        [
+          _c("multiselect", {
+            attrs: {
+              value: _vm.form.extensions,
+              "tag-placeholder": "Add this as new tag",
+              placeholder: "Search or add a tag",
+              label: "name",
+              "track-by": "code",
+              options: _vm.options,
+              multiple: true,
+              taggable: true
             },
-            [_vm._v("Diretoria")]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-sm-6" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.form.directory,
-                  expression: "form.directory"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: { type: "text" },
-              domProps: { value: _vm.form.directory },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.form, "directory", $event.target.value)
-                }
-              }
-            })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group row" }, [
-          _c(
-            "label",
-            {
-              staticClass: "col-sm-2 col-form-label",
-              attrs: { for: "staticEmail" }
-            },
-            [_vm._v("Título")]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-sm-6" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.form.title,
-                  expression: "form.title"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: { type: "text" },
-              domProps: { value: _vm.form.title },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.form, "title", $event.target.value)
-                }
-              }
-            })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group row" }, [
-          _c(
-            "label",
-            {
-              staticClass: "col-sm-2 col-form-label",
-              attrs: { for: "staticEmail" }
-            },
-            [_vm._v("Extensão")]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-sm-6" },
-            [
-              _c("multiselect", {
-                attrs: {
-                  name: "file-type",
-                  value: _vm.value,
-                  "tag-placeholder": "Add this as new tag",
-                  placeholder: "Search or add a tag",
-                  label: "name",
-                  "track-by": "code",
-                  options: _vm.options,
-                  multiple: true,
-                  taggable: true
-                },
-                on: { tag: _vm.addTag },
-                model: {
-                  value: _vm.form.extensions,
-                  callback: function($$v) {
-                    _vm.$set(_vm.form, "extensions", $$v)
-                  },
-                  expression: "form.extensions"
-                }
-              })
-            ],
-            1
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group row" }, [
-          _c(
-            "label",
-            {
-              staticClass: "col-sm-2 col-form-label",
-              attrs: { for: "staticEmail" }
-            },
-            [_vm._v("Tam. Máximo")]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-sm-6" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.form.max_file_size,
-                  expression: "form.max_file_size"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: { type: "number" },
-              domProps: { value: _vm.form.max_file_size },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.form, "max_file_size", $event.target.value)
-                }
-              }
-            })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group row" }, [
-          _c("label", {
-            staticClass: "col-sm-2 col-form-label",
-            attrs: { for: "staticEmail" }
+            on: { tag: _vm.addTag },
+            model: {
+              value: _vm.form.extensions,
+              callback: function($$v) {
+                _vm.$set(_vm.form, "extensions", $$v)
+              },
+              expression: "form.extensions"
+            }
           }),
           _vm._v(" "),
-          _c("div", { staticClass: "col-sm-10" }, [
-            _vm._m(0),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-danger btn-flat",
-                attrs: { href: _vm.cancelurl }
-              },
-              [_c("i", { staticClass: "fa fa-times" }), _vm._v(" Cancelar")]
-            )
-          ])
-        ])
-      ]
-    )
+          _vm.errors
+            ? _c(
+                "small",
+                { staticClass: "bo-campos-obrigatorios" },
+                _vm._l(_vm.errors.extensions, function(extensions, index) {
+                  return _c("span", { key: index }, [
+                    _vm._v(_vm._s(extensions))
+                  ])
+                }),
+                0
+              )
+            : _vm._e()
+        ],
+        1
+      )
+    ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      { staticClass: "btn btn-primary btn-flat", attrs: { type: "submit" } },
-      [_c("i", { staticClass: "fa fa-check" }), _vm._v(" Guardar")]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -44413,21 +44217,7 @@ var render = function() {
             [_vm._m(1)]
           )
         ])
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "row" },
-        [
-          _vm.showModal
-            ? _c("modal-files", {
-                attrs: { directory: _vm.directory },
-                on: { close: _vm.closeModal, setInput: _vm.setInputValue }
-              })
-            : _vm._e()
-        ],
-        1
-      )
+      ])
     ]
   )
 }
@@ -68293,8 +68083,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/jorgevarela/nha-projetu-base-laravel-bo-vue/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/jorgevarela/nha-projetu-base-laravel-bo-vue/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/jorgevarela/projeto-base/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/jorgevarela/projeto-base/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -4,7 +4,7 @@ namespace App\Http\Requests\Backoffice;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FileTypesRequest extends FormRequest
+class FileTypeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class FileTypesRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class FileTypesRequest extends FormRequest
     public function rules()
     {
         return [
-            //
-        ];
+            'directory' => 'required|unique:file_types|max:255',
+            'title' => 'required|unique:file_types|max:255',
+            'extensions' => 'required',
+            'max_file_size' => 'required',
+        ]; 
     }
 }

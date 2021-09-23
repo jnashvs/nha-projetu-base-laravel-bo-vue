@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 //use Artesaos\SEOTools\Facades\SEOTools;
 use SEOMeta;
+use function GuzzleHttp\json_decode;
+use App\Http\Requests\Backoffice\FileTypeRequest;
 
 class HomeController extends Controller
 {
@@ -52,5 +54,13 @@ class HomeController extends Controller
         OpenGraph::setTitle($pagina->titulo);
         OpenGraph::setDescription($descricao);
         OpenGraph::addImage($img, ['height' => 300, 'width' => 300]);
+    }
+
+    public function testpost(FileTypeRequest $request)
+    {
+
+        $res = json_decode($request->input('file_type'));
+        
+        dd($res);
     }
 }

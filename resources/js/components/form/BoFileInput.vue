@@ -25,18 +25,6 @@
       </div>
     </div>
 
-    <!-- parte modal -->
-    <!-- use the modal component, pass in the prop -->
-    <div class="row">
-      <modal-files
-        v-if="showModal"
-        @close="closeModal"
-        @setInput="setInputValue"
-        :directory="directory"
-      >
-      </modal-files>
-    </div>
-
   </div>
 </template>
 

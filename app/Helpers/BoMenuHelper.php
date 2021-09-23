@@ -11,6 +11,12 @@ if(!function_exists("backoffice_menus")){
                 'icon'=>'nav-icon fas fa-th',
                 'route'=>route("files"),
             ],
+            [
+                'key'=>'',
+                'title'=>'Tipos de Ficheiros',
+                'icon'=>'nav-icon fas fa-th',
+                'route'=>route("file-types"),
+            ],
         ];
     }
 

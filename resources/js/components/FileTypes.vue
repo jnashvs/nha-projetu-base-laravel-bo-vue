@@ -1,30 +1,15 @@
 <!-- Vue component -->
 <template>
-  <div class="file-types-container">
-    <form @submit.prevent="onSubmit">
-      <div class="form-group row">
-        <label for="staticEmail" class="col-sm-2 col-form-label">Diretoria</label>
-        <div class="col-sm-6">
-          <input type="text" class="form-control" v-model="form.directory"/>
-          <!-- <small v-if="errors" class="campos-obrigatorios">
-            <span v-for="(nome, index) in errors.nome" :key="index">{{nome}}</span>
-          </small> -->
-        </div>
-      </div>
-
-      <div class="form-group row">
-        <label for="staticEmail" class="col-sm-2 col-form-label">Título</label>
-        <div class="col-sm-6">
-          <input type="text" class="form-control" v-model="form.title"/>
-        </div>
-      </div>
+<div>
+<div class="form-group row">
+  <input type="hidden" :name="inputName" :value="JSON.stringify(form.extensions)">
+  </div>
 
       <div class="form-group row">
         <label for="staticEmail" class="col-sm-2 col-form-label">Extensão</label>
         <div class="col-sm-6">
           <multiselect
-            name="file-type"
-            :value="value"
+            :value="form.extensions"
             v-model="form.extensions"
             tag-placeholder="Add this as new tag"
             placeholder="Search or add a tag"
@@ -35,26 +20,12 @@
             :taggable="true"
             @tag="addTag"
           ></multiselect>
+          <small v-if="errors" class="bo-campos-obrigatorios">
+            <span v-for="(extensions, index) in errors.extensions" :key="index">{{extensions}}</span>
+          </small>
         </div>
       </div>
-
-      <div class="form-group row">
-        <label for="staticEmail" class="col-sm-2 col-form-label">Tam. Máximo</label>
-        <div class="col-sm-6">
-          <input type="number" class="form-control" v-model="form.max_file_size"/>
-        </div>
       </div>
-      <br>
-      <div class="form-group row">
-        <label for="staticEmail" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-          <button type="submit" class="btn btn-primary btn-flat"><i class="fa fa-check"></i> Guardar</button>
-          <a :href="cancelurl" class="btn btn-danger btn-flat"><i class="fa fa-times"></i> Cancelar</a>
-        </div>
-      </div>
-      
-    </form>
-  </div>
 </template>
 
 <script>
@@ -67,17 +38,15 @@ export default {
   // OR register locally
   components: { Multiselect },
   props:{
-    cancelurl: {
-      type: String,
-      required: true
-    },
+    inputName: String,
     data: {
       //type: Object
+    },
+    errors: {
     },
   },
   data() {
     return {
-      errors: [],
       value: [],
       options: [
         { name: "image/*", code: "img" },
@@ -93,18 +62,10 @@ export default {
         { name: "application/csv", code: "csv" },
       ],
       form: {
-        id: '',
-        directory: '',
-        title: '',
         extensions: '',
-        max_file_size: '',
       },
       emptyForm: {
-        id: '',
-        directory: '',
-        title: '',
         extensions: '',
-        max_file_size: '',
       }
     };
   },
@@ -117,28 +78,11 @@ export default {
       this.options.push(tag);
       this.value.push(tag);
     },
-    onSubmit(){
-      console.log(JSON.stringify(this.form));
-      axios
-        .post('/file-types/store/', this.form)
-        .then(function(response) {
-          console.log(response)
-          console.log('file types well created');
-        })
-        .catch(e => {
-          // if (errors.response.status == 422) {
-          //     this.errors = errors.response.data.errors;
-          // } else {
-          //   console.log(errors.response.status);
-          // }
-        });
-
-      this.form = this.emptyForm;
-    }
   },
   mounted(){
     if(this.data){
       this.form = JSON.parse(this.data);
+      console.log(this.form);
     }
   }
 };
