@@ -7,6 +7,13 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
+## STEPS TO INSTALL THE PROJECT - RUN THE FOLLOWING COMMANDS STEP BY STEP
+
+composer install
+npm install
+php artisan migrate
+php artisan db:seed
+
 ## PACOTES USADOS
 
 
