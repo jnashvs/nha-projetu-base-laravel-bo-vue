@@ -17,6 +17,12 @@ if(!function_exists("backoffice_menus")){
                 'icon'=>'nav-icon fas fa-th',
                 'route'=>route("file-types"),
             ],
+            [
+                'key'=>'',
+                'title'=>'Utilizadores',
+                'icon'=>'nav-icon fas fa-th',
+                'route'=>route("user-manegement.index"),
+            ],
         ];
     }
 

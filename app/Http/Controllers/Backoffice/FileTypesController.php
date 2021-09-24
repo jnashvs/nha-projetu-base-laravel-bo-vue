@@ -5,14 +5,10 @@ namespace App\Http\Controllers\Backoffice;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\FileTypes;
-use Illuminate\Support\Facades\Log;
 use App\Repositories\Repository;
-use function GuzzleHttp\json_encode;
 use Illuminate\Support\Facades\File;
-use App\Http\Requests\Backoffice\FileTypeRequest;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;
-use App\Http\Requests\Backoffice\FilesTypeRequest;
+use App\Http\Requests\Backoffice\SaveFileTypeRequest;
 
 class FileTypesController extends Controller
 {
@@ -48,14 +44,10 @@ class FileTypesController extends Controller
         return view('backoffice.file-types.index', compact('fileTypes'));
     }
 
-    public function store(FilesTypeRequest $request)
+    public function store(SaveFileTypeRequest $request)
     {
-        //Log::info($request->all());
         $dados = $request->except('_token');
 
-        $all = Session::all();
-
-        $old_dir_path = public_path() . "/files/{$all['old_dir']}/";
         $dir_path = public_path() . "/files/{$request->input('directory')}/";
 
         if ($dados['id'] == NULL) {
@@ -66,6 +58,8 @@ class FileTypesController extends Controller
                 $msg = $this->SUCESS_CREATED;
             }
         } else {
+            $all = Session::all();
+            $old_dir_path = public_path() . "/files/{$all['old_dir']}/";
             if (rename($old_dir_path, $dir_path)) {
                 $this->model->update($dados, $dados['id']);
                 $msg = $this->SUCESS_UPDATED;

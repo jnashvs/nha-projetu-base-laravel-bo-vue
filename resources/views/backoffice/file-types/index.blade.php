@@ -2,16 +2,15 @@
 
 @section('content')
 
-<h4>Tipos de Ficheiro</h4>
-<h5>
-    <a class="btn btn-primary float-right my-2" href="{{route('edit-file-types')}}">Criar</a>
-</h5>
+<h3>Tipos de Ficheiro</h3>
 
-<br>
-<p>
+<p class="my-4">
+    <a class="btn btn-primary float-right my-2" href="{{route('edit-file-types')}}">Criar</a>
+</p>
+
+<p class="mb-4">
     @include('backoffice.partials.success', ['status'=> isset($status) ? $status : ''])
 </p>
-<br>
 
 <table class="table table-striped">
     <thead>
@@ -21,7 +20,8 @@
         <th>Extensão</th>
         <th>Tamanho max.</th>
         <th>Criado Em</th>
-        <th>Acção</th>
+        <th class="w-10px"></th>
+        <th class="w-10px"></th>
     </thead>
     <tbody>
         @if ($fileTypes->count() == 0)
@@ -38,7 +38,7 @@
             <td>{{ $item->getTypes() }}</td>
             <td>{{ $item->max_file_size }}</td>
             <td>{{ $item->created_at }}</td>
-            <td><a href="{{route('edit-file-types', $item->id)}}"><i class="fa fa-pencil" aria-hidden="true"></i>edit</a></td>
+            <td><a class="btn btn-primary" href="{{route('edit-file-types', $item->id)}}"><i class="fa fa-pen" aria-hidden="true"></i></a></td>
 
             @include('backoffice.partials._delete-button', ['route'=> route('delete-file-types', ['id'=>$item->id, 'directory'=>$item->directory])])
         </tr>
