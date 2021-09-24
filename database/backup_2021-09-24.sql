@@ -1,13 +1,13 @@
 # ************************************************************
 # Sequel Pro SQL dump
-# Versão 4541
+# Vers�o 4541
 #
 # http://www.sequelpro.com/
 # https://github.com/sequelpro/sequelpro
 #
 # Host: 127.0.0.1 (MySQL 5.7.29)
-# Base de Dados: bloglara7
-# Tempo de Geração: 2021-02-21 00:28:05 +0000
+# Base de Dados: bodatabase
+# Tempo de Gera��o: 2021-09-24 13:59:01 +0000
 # ************************************************************
 
 
@@ -18,6 +18,55 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+# Dump da tabela admins
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `admins`;
+
+CREATE TABLE `admins` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `admins_email_unique` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+LOCK TABLES `admins` WRITE;
+/*!40000 ALTER TABLE `admins` DISABLE KEYS */;
+
+INSERT INTO `admins` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`)
+VALUES
+	(1,'admin','admin@admin.com','$2y$10$hewiJN3QDZ90zNCkrmjvg.Xh3Fm9pMjhhwlVlF4SFsOIq0hwJXCLG',NULL,'2021-07-02 11:02:02','2021-07-02 11:02:02');
+
+/*!40000 ALTER TABLE `admins` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump da tabela candidatos
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `candidatos`;
+
+CREATE TABLE `candidatos` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `nome` varchar(350) DEFAULT NULL,
+  `cargo` varchar(350) DEFAULT NULL,
+  `imagem` varchar(350) DEFAULT NULL,
+  `imagem_hover` varchar(350) DEFAULT NULL,
+  `imagem_detalhes` varchar(250) DEFAULT NULL,
+  `descricao` longtext CHARACTER SET utf8,
+  `ordem` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 
 # Dump da tabela failed_jobs
@@ -44,13 +93,15 @@ DROP TABLE IF EXISTS `file_types`;
 
 CREATE TABLE `file_types` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `directory` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `directory` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `title` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `extensions` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `max_file_size` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `directory` (`directory`),
+  UNIQUE KEY `title` (`title`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 LOCK TABLES `file_types` WRITE;
@@ -58,8 +109,8 @@ LOCK TABLES `file_types` WRITE;
 
 INSERT INTO `file_types` (`id`, `directory`, `title`, `extensions`, `max_file_size`, `created_at`, `updated_at`)
 VALUES
-	(2,'sever','title','[{\"name\":\"image\\/png\",\"code\":\"png\"},{\"name\":\"application\\/xlsx\",\"code\":\"xlsx\"},{\"name\":\"application\\/pdf\",\"code\":\"pdf\"}]',2000,'2021-02-20 20:13:16','2021-02-20 20:13:16'),
-	(3,'dir test','test title','[{\"name\":\"image\\/*\",\"code\":\"img\"}]',3333,'2021-02-21 00:03:42','2021-02-21 00:03:42');
+	(8,'slingshot','slingshot','[{\"name\":\"image\\/*\",\"code\":\"img\"},{\"name\":\"application\\/csv\",\"code\":\"csv\"}]',7,'2021-09-20 16:15:01','2021-09-21 12:31:27'),
+	(14,'teste','teste','[{\"name\":\"application/pdf\",\"code\":\"pdf\"}]',33,'2021-09-23 15:39:57','2021-09-24 09:24:28');
 
 /*!40000 ALTER TABLE `file_types` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -89,16 +140,10 @@ LOCK TABLES `files` WRITE;
 
 INSERT INTO `files` (`id`, `path`, `width`, `height`, `size`, `file_type_id`, `created_at`, `updated_at`)
 VALUES
-	(7,'btMoeejzf8gt9U5n-sustentabilidade-final.jpg',NULL,NULL,1,1,'2021-02-20 00:15:42','2021-02-20 00:15:42'),
-	(8,'Dac1pblBnouLc7I7-passeio-cavalo.jpg',NULL,NULL,222,1,'2021-02-20 00:16:00','2021-02-20 00:16:00'),
-	(9,'SZe270OR3MXByJTP-novo_ficheiro.pdf',NULL,NULL,3332,2,'2021-02-20 00:17:29','2021-02-20 00:17:29'),
-	(10,'sNg1WnSXTHsFJWCW-Exames.docx',NULL,NULL,0,2,'2021-02-20 02:02:13','2021-02-20 02:02:13'),
-	(11,'ZzEjmwChxmwra9pe-icon-tiktok.png',NULL,NULL,0,2,'2021-02-20 03:01:39','2021-02-20 03:01:39'),
-	(12,'GcNMllCkV8uP0E4l-novo_ficheiro.pdf',NULL,NULL,0,3,'2021-02-20 03:03:35','2021-02-20 03:03:35'),
-	(13,'8sr3R5QHbk8eWUOd-photo_2020-04-03_13-08-53.jpg',NULL,NULL,0,NULL,'2021-02-20 17:24:27','2021-02-20 17:24:27'),
-	(14,'1Zz4mJiNypBmHSN1-C67A6482-1-trat.jpg',NULL,NULL,0,NULL,'2021-02-20 17:26:11','2021-02-20 17:26:11'),
-	(15,'9YOnTfoQSvTfLGMK-Prof Celio.docx',NULL,NULL,0,NULL,'2021-02-20 17:27:09','2021-02-20 17:27:09'),
-	(16,'LZMD8fDHmKWdzhOR-ultimos detalhes.docx',NULL,NULL,0,NULL,'2021-02-20 17:28:31','2021-02-20 17:28:31');
+	(1,'/files/teste/1swf5orclLr7lEUr-residencia.pdf',NULL,NULL,0,14,'2021-09-23 15:41:06','2021-09-23 15:41:06'),
+	(7,'/files/slingshot/98Cb-Captura de ecrã 2021-09-21, às 17.11.42.png',NULL,NULL,0,8,'2021-09-23 17:34:16','2021-09-23 17:34:16'),
+	(8,'/files/slingshot/KW4X-Captura de ecrã 2021-09-21, às 17.11.42.png',NULL,NULL,0,8,'2021-09-23 17:34:31','2021-09-23 17:34:31'),
+	(9,'/files/pdf/3dZA-residencia JORGE.pdf',NULL,NULL,0,15,'2021-09-24 08:41:01','2021-09-24 08:41:01');
 
 /*!40000 ALTER TABLE `files` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -116,17 +161,6 @@ CREATE TABLE `migrations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-LOCK TABLES `migrations` WRITE;
-/*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-
-INSERT INTO `migrations` (`id`, `migration`, `batch`)
-VALUES
-	(1,'2014_10_12_000000_create_users_table',1),
-	(2,'2014_10_12_100000_create_password_resets_table',1),
-	(3,'2019_08_19_000000_create_failed_jobs_table',1);
-
-/*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump da tabela password_resets
@@ -166,10 +200,32 @@ LOCK TABLES `users` WRITE;
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`)
 VALUES
-	(1,'Jjorge','jorge.silva@slingshot.pt',NULL,'$2y$10$uwZxTe/9wvLbSl19P8ZMeO7vfJInHlAnCxtnKFpa4NSeSh9dF1yeS',NULL,'2021-02-17 14:11:59','2021-02-17 14:11:59');
+	(2,'user','user@user.com',NULL,'$2y$10$i08fJ.tjcviGf1u/ADF7TuXu3vCTiFAHeh4FON8fbJ7XzE6h0MrzS',NULL,'2021-07-02 11:39:31','2021-07-02 11:39:31'),
+	(3,'Jorge Silva','jorge.silva@slingshot.pt',NULL,'$2y$10$uwZxTe/9wvLbSl19P8ZMeO7vfJInHlAnCxtnKFpa4NSeSh9dF1yeS',NULL,'2021-07-02 15:43:48','2021-07-02 15:43:48'),
+	(7,'Eaton Mullen','caqovywov@mailinator.com',NULL,'$2y$10$I8TttmtMMuQ84huYWhhDIedcD.mtPvH2c8jWzGd.rLvjata7OLooy',NULL,'2021-09-24 11:36:59','2021-09-24 11:36:59');
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+
+
+# Dump da tabela wishes
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `wishes`;
+
+CREATE TABLE `wishes` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `nome` varchar(350) DEFAULT NULL,
+  `data_nascimento` date DEFAULT NULL,
+  `freguesia` varchar(350) DEFAULT NULL,
+  `email` varchar(350) DEFAULT NULL,
+  `msg` text,
+  `tipo` tinyint(2) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 
 
