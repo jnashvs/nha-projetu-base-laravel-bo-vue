@@ -9,10 +9,10 @@
 
 ## STEPS TO INSTALL THE PROJECT - RUN THE FOLLOWING COMMANDS STEP BY STEP
 
-# composer install
-# npm install
-# php artisan migrate
-# php artisan db:seed
+#1- composer install
+#2- npm install
+#3- php artisan migrate
+#4- php artisan db:seed
 
 ## PACOTES USADOS
 
