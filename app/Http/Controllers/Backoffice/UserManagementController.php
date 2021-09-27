@@ -53,13 +53,17 @@ class UserManagementController extends Controller
             $request['password'] = bcrypt($request['password']);
 
         if(isset($request['id'])){
+
+
             
-            $saved = $this->model->update($request, $request['id']);
+            //$saved = $this->model->update($request, $request['id']);
             $msg = "Dados atualizados com sucesso!";
         }else{
-            $saved  = $this->model->create($request);
+            //$saved  = $this->model->create($request);
             $msg = "Dados inseridos com sucesso!";
         }
+
+        dd($msg);
 
         return redirect()->route('user-manegement.index')->with('status', $msg);
     }

@@ -24,6 +24,8 @@ Route::group(['namespace' => 'Backoffice'], function()
 
         Route::resource('user-manegement', 'UserManagementController');
 
+        Route::get('/user-manegement/edit/{id?}/', 'UserManagementController@edit')->name('user-manegement.edit');
+
         Route::get('/files', 'FilesController@index')->name('files');
 
         Route::get('/file-types', 'FileTypesController@index')->name('file-types');

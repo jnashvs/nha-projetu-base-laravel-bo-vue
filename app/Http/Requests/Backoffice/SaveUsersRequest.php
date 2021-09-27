@@ -29,13 +29,14 @@ class SaveUsersRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'name' => ['required'],
-            //'email' => ['required', 'email', 'unique:users,email,'.$this->request->get('id')],
-            'email' => 'required|unique:users,email,'.$this->request->get('id'),
-            'password' => ['sometimes', 'required', 'min:6', 'confirmed'],
-            'password_confirmation' => ['sometimes' ,'required', 'min:6']
+            'email' => 'required|unique:users,email,'. $this->request->get('id'),
         ];
+        
+        $rules['password'] = $this->request->get('id') ? 'nullable|required_with:password_confirmation|string|confirmed': 'required_with:password_confirmation|string|confirmed';
+
+        return $rules;
     }
 
     public function attributes()

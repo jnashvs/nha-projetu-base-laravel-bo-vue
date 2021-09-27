@@ -13,6 +13,8 @@
 
     @open(['model' => $user, 'route' => 'user-manegement.store'])
 
+    @hidden('id')
+
     @text('name', 'Nome')
 
     @email('email', 'E-mail')

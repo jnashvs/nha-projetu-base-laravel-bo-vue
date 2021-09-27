@@ -26,7 +26,7 @@
     <tbody>
         @if ($fileTypes->count() == 0)
         <tr>
-            <td colspan="5">No records.</td>
+            <td colspan="8">No records.</td>
         </tr>
         @endif
 
