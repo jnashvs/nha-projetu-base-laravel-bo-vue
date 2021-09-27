@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\User;
-use App\Repositories\Repository;
 use App\Http\Requests\Backoffice\SaveUsersRequest;
+use App\Repositories\UserRepository;
 
 class UserManagementController extends Controller
 {
@@ -14,7 +13,7 @@ class UserManagementController extends Controller
 
     public function __construct(User $model)
     {
-        $this->model = new Repository($model);
+        $this->model = new UserRepository($model);
     }
 
     /**
@@ -49,43 +48,27 @@ class UserManagementController extends Controller
     {
         $request = $request->only('id', 'name', 'email', 'password');
 
-        if($request['password'])
+        if ($request['password'])
             $request['password'] = bcrypt($request['password']);
 
-        if(isset($request['id'])){
-
-
-            
-            //$saved = $this->model->update($request, $request['id']);
+        if (isset($request['id'])) {
+            $saved = $this->model->update($request, $request['id']);
             $msg = "Dados atualizados com sucesso!";
-        }else{
-            //$saved  = $this->model->create($request);
+        } else {
+            $saved  = $this->model->create($request);
             $msg = "Dados inseridos com sucesso!";
         }
-
-        dd($msg);
 
         return redirect()->route('user-manegement.index')->with('status', $msg);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Candidatos  $candidatos
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Candidatos $candidatos)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Candidatos  $candidatos
+     * @param  \App\Models\User  
      * @return \Illuminate\Http\Response
      */
-    public function edit($id=null)
+    public function edit($id = null)
     {
         $user = $this->model->find($id);
 
@@ -96,19 +79,10 @@ class UserManagementController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Candidatos  $candidatos
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreCandidatos $request)
-    {
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Candidatos  $candidatos
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy($id)
     {
         try {
