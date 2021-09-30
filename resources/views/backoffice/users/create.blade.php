@@ -9,7 +9,7 @@
 
 <div class="container-create-user mt-4">
 
-    @open(['model' => $user, 'route' => 'user-manegement.store'])
+    @open(['model' => $user, 'route' => 'user-manegament.store'])
 
     @text('name', 'Nome')
 

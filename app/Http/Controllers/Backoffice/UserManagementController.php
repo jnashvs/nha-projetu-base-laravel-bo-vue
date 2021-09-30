@@ -6,10 +6,16 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Http\Requests\Backoffice\SaveUsersRequest;
 use App\Repositories\UserRepository;
+use Illuminate\Http\Request;
 
 class UserManagementController extends Controller
 {
     private $model;
+
+    private $colunas =[
+        'id'=>'ID',
+        'name'=>'Name',
+    ];
 
     public function __construct(User $model)
     {
@@ -21,11 +27,11 @@ class UserManagementController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = $this->model->all();
+        $users = $this->model->all($request->input('search_by'), $request->input('search'));
 
-        return view('backoffice.users.index')->with('users', $users);
+        return view('backoffice.users.index')->with(['users'=> $users, 'colunas'=>$this->colunas]);
     }
 
     /**
@@ -59,7 +65,7 @@ class UserManagementController extends Controller
             $msg = "Dados inseridos com sucesso!";
         }
 
-        return redirect()->route('user-manegement.index')->with('status', $msg);
+        return redirect()->route('user-management.index')->with('status', $msg);
     }
 
     /**
@@ -93,6 +99,6 @@ class UserManagementController extends Controller
             dd($th);
         }
 
-        return redirect()->route('user-manegement.index')->with('status', $msg);
+        return redirect()->route('user-management.index')->with('status', $msg);
     }
 }

@@ -22,9 +22,9 @@ Route::group(['namespace' => 'Backoffice'], function()
             return view('backoffice.test');
         });
 
-        Route::resource('user-manegement', 'UserManagementController');
+        Route::resource('user-management', 'UserManagementController');
 
-        Route::get('/user-manegement/edit/{id?}/', 'UserManagementController@edit')->name('user-manegement.edit');
+        Route::get('/user-management/edit/{id?}/', 'UserManagementController@edit')->name('user-management.edit');
 
         Route::get('/files', 'FilesController@index')->name('files');
 

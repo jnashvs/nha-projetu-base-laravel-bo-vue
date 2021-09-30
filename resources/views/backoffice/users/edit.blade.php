@@ -1,26 +1,30 @@
 @extends('backoffice.layouts.master')
 
 @section('content')
-<div class="titulo mb-4">
-<h4>{{isset($user->id) ? 'Editar' : 'Criar' }} Utilizador</h4>
-</div>
 
-<div class="container-create-user mt-4">
+<div class="form-edit">
+    <div class="titulo mb-4">
+        <h4>{{isset($user->id) ? 'Editar' : 'Criar' }} Utilizador</h4>
+    </div>
 
-    @open(['model' => $user, 'route' => 'user-manegement.store'])
+    <div class="container-create-user mt-4">
 
-    @hidden('id')
+        @open(['model' => $user, 'route' => 'user-management.store'])
 
-    @text('name', 'Nome')
+        @hidden('id')
 
-    @email('email', 'E-mail')
+        @text('name', 'Nome')
 
-    @password('password', 'Palavra-passe')
+        @email('email', 'E-mail')
 
-    @password('password_confirmation', 'Confirmação da Palavra-passe')
+        @password('password', 'Palavra-passe')
 
-    @submit('Guardar')
-    @close
+        @password('password_confirmation', 'Confirmação da Palavra-passe')
+
+        @submit('Guardar')
+        @close
+
+    </div>
 
 </div>
 

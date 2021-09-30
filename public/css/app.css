@@ -32928,6 +32928,20 @@ a.text-muted:hover {
   width: 10px;
 }
 
+@media (min-width: 768px) {
+  .backoffice-style .form-edit {
+    width: 70%;
+    margin: auto !important;
+  }
+}
+
+.backoffice-style .dropdown-menu ul,
+.backoffice-style .dropdown-menu li {
+  list-style: none;
+  padding: 0px;
+  text-align: center;
+}
+
 /*!
  * Bootstrap v4.6.0 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors

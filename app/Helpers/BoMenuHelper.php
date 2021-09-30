@@ -21,7 +21,7 @@ if(!function_exists("backoffice_menus")){
                 'key'=>'',
                 'title'=>'Utilizadores',
                 'icon'=>'nav-icon fas fa-th',
-                'route'=>route("user-manegement.index"),
+                'route'=>route("user-management.index"),
             ],
         ];
     }

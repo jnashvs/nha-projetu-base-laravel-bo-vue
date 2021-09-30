@@ -3,8 +3,12 @@
 @section('content')
 <h3>Utilizadores</h3>
 
+<p>
+    @include('backoffice.partials._search', compact('colunas'))
+</p>
+
 <p class="my-4">
-    <a class="btn btn-primary float-right my-2" href="{{route('user-manegement.create')}}">Criar</a>
+    <a class="btn btn-primary float-right my-2" href="{{route('user-management.create')}}">Criar</a>
 </p>
 
 <p class="mb-4">
@@ -35,8 +39,8 @@
             <td>{{ $user->getName() }}</td>
             <td>{{ $user->getEmail() }}</td>
             <td>{{ $user->getCreatedAt() }}</td>
-            <td><a class="btn btn-primary" href="{{route('user-manegement.edit', $user->getId() )}}"><i class="fa fa-pen" aria-hidden="true"></i></a></td>
-            @include('backoffice.partials._delete-button', ['route'=> route('user-manegement.destroy', $user->getId())])
+            <td><a class="btn btn-primary" href="{{route('user-management.edit', $user->getId() )}}"><i class="fa fa-pen" aria-hidden="true"></i></a></td>
+            @include('backoffice.partials._delete-button', ['route'=> route('user-management.destroy', $user->getId())])
         </tr>
         @endforeach
     </tbody>

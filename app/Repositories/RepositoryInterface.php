@@ -3,7 +3,7 @@ namespace App\Repositories;
 
 interface RepositoryInterface
 {
-    public function all($query = null, $paginate = true);
+    public function all($search_by = null, $search = null, $query = null, $paginate = true);
 
     public function create(array $data);
 

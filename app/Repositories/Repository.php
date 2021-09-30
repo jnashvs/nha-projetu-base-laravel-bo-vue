@@ -15,11 +15,15 @@ class Repository implements RepositoryInterface
     }
 
     // Get all instances of model
-    public function all($query = null, $paginate = true)
+    public function all($search_by = null, $search = null, $query = null, $paginate = true)
     {
 
         if (is_null($query)) {
             $query = $this->model;
+        }
+
+        if($search_by && $search){
+            $query->where($search_by, 'LIKE', '%'.$search.'%');
         }
 
         if ($paginate) {

@@ -49,7 +49,7 @@ class FileTypes extends Model
     }
 
     public function getMaxFileSize(){
-        return $this->max_file_size ? $this->max_file_size. ' Mb' : '';
+        return $this->max_file_size.' Mb' ?? '';
     }
 
     public function getCreatedAt(){

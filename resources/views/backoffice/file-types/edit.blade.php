@@ -1,19 +1,19 @@
 @extends('backoffice.layouts.master')
 
 @section('content')
+<div class="form-edit">
+    <div class="titulo mb-4">
+        <h4>{{$filetypes->id ? 'Editar' : 'Criar' }} Tipos de Ficheiro</h4>
+    </div>
 
-<div class="titulo mb-4">
-<h4>{{$filetypes->id ? 'Editar' : 'Criar' }} Tipos de Ficheiro</h4>
-</div>
-
-<div class="container file-types">
+    <div class="container file-types">
 
         @open(['model' => $filetypes, 'route' => ['file.types.store', 'id' => $filetypes->id]])
-        
+
         @hidden('id')
 
         @text('title')
-        
+
         @text('directory')
 
         <div class="file-types-area">
@@ -25,6 +25,7 @@
         @submit('Guardar')
         @close
 
+    </div>
 </div>
 
 @endsection
