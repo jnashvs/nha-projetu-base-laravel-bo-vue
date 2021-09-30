@@ -16,17 +16,18 @@ window.Vue = require('vue');
  * Vue components. It will recursively scan this directory for the Vue
  * components and automatically register them with their "basename".
  *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
+ * Eg. ./backoffice-components/ExampleComponent.vue -> <example-component></example-component>
  */
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('dropzone-component', require('./components/Dropzone.vue').default);
-Vue.component('filetypes-component', require('./components/FileTypes.vue').default);
-Vue.component('my-input', require('./components/MyInput.vue').default);
-Vue.component('bo-file-input', require('./components/form/BoFileInput.vue').default);
+Vue.component('example-component', require('./backoffice-components/ExampleComponent.vue').default);
+Vue.component('dropzone-component', require('./backoffice-components/Dropzone.vue').default);
+Vue.component('filetypes-component', require('./backoffice-components/FileTypes.vue').default);
+Vue.component('my-input', require('./backoffice-components/MyInput.vue').default);
+Vue.component('bo-file-input', require('./backoffice-components/form/BoFileInput.vue').default);
+Vue.component('alert-success', require('./backoffice-components/alerts/AlertSuccess.vue').default);
 
 import Multiselect from "vue-multiselect";
 
@@ -37,10 +38,10 @@ Vue.component("multiselect", Multiselect);
 import VueLazyload from 'vue-lazyload'
 
 Vue.use(VueLazyload, {
-  preLoad: 1.3,
-//   error: errorimage,
-//   loading: loadimage,
-  attempt: 1
+    preLoad: 1.3,
+    //   error: errorimage,
+    //   loading: loadimage,
+    attempt: 1
 })
 
 /**
@@ -50,7 +51,7 @@ Vue.use(VueLazyload, {
  */
 import VueRouter from 'vue-router'
 
-import {ClientTable, Event} from 'vue-tables-2';
+import { ClientTable, Event } from 'vue-tables-2';
 Vue.use(ClientTable, Event);
 
 Vue.use(VueRouter)

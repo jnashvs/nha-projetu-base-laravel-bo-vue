@@ -5,10 +5,6 @@
 <h4>{{isset($user->id) ? 'Editar' : 'Criar' }} Utilizador</h4>
 </div>
 
-<p class="mb-4">
-    @include('backoffice.partials.success', ['status'=> isset($status) ? $status : ''])
-</p>
-
 <div class="container-create-user mt-4">
 
     @open(['model' => $user, 'route' => 'user-manegement.store'])
