@@ -21,9 +21,11 @@
 
 <table class="table table-striped">
     <thead>
+        <th>ID</th>
         <th>Nome</th>
         <th>E-mail</th>
         <th>Criado Em</th>
+        <th class="w-10px"></th>
         <th class="w-10px"></th>
         <th class="w-10px"></th>
     </thead>
@@ -36,6 +38,7 @@
 
         @foreach ($users as $user)
         <tr>
+            <td>{{ $user->getId() }}</td>
             <td>{{ $user->getName() }}</td>
             <td>{{ $user->getEmail() }}</td>
             <td>{{ $user->getCreatedAt() }}</td>
