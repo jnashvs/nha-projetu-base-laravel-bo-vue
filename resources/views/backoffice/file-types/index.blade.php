@@ -32,15 +32,15 @@
 
         @foreach ($fileTypes as $item)
         <tr>
-            <td>{{ $item->id }}</td>
-            <td>{{ $item->title }}</td>
-            <td>{{ $item->directory }}</td>
-            <td>{{ $item->getTypes() }}</td>
-            <td>{{ $item->max_file_size }}</td>
-            <td>{{ $item->created_at }}</td>
-            <td><a class="btn btn-primary" href="{{route('edit-file-types', $item->id)}}"><i class="fa fa-pen" aria-hidden="true"></i></a></td>
+            <td>{{ $item->getId()}}</td>
+            <td>{{ $item->getTitle() }}</td>
+            <td>{{ $item->getDirectory() }}</td>
+            <td>{{ $item->getExtensions() }}</td>
+            <td>{{ $item->getMaxFileSize() }}</td>
+            <td>{{ $item->getCreatedAt() }}</td>
+            <td><a class="btn btn-primary" href="{{ route('edit-file-types', $item->getId())}}"> <i class="fa fa-pen" aria-hidden="true"></i> </a> </td>
 
-            @include('backoffice.partials._delete-button', ['route'=> route('delete-file-types', ['id'=>$item->id, 'directory'=>$item->directory])])
+            @include('backoffice.partials._delete-button', ['route'=> route('delete-file-types', ['id'=> $item->getId(), 'directory'=> $item->getDirectory() ])])
         </tr>
         @endforeach
     </tbody>
@@ -53,5 +53,3 @@
 </p>
 
 @endsection
-
-

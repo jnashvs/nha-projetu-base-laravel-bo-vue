@@ -32,11 +32,11 @@
 
         @foreach ($users as $user)
         <tr>
-            <td>{{ $user->name }}</td>
-            <td>{{ $user->email }}</td>
-            <td>{{ $user->created_at }}</td>
-            <td><a class="btn btn-primary" href="{{route('user-manegement.edit', $user->id)}}"><i class="fa fa-pen" aria-hidden="true"></i></a></td>
-            @include('backoffice.partials._delete-button', ['route'=> route('user-manegement.destroy', $user->id)])
+            <td>{{ $user->getName() }}</td>
+            <td>{{ $user->getEmail() }}</td>
+            <td>{{ $user->getCreatedAt() }}</td>
+            <td><a class="btn btn-primary" href="{{route('user-manegement.edit', $user->getId() )}}"><i class="fa fa-pen" aria-hidden="true"></i></a></td>
+            @include('backoffice.partials._delete-button', ['route'=> route('user-manegement.destroy', $user->getId())])
         </tr>
         @endforeach
     </tbody>

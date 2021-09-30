@@ -22,12 +22,7 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./backoffice-components/ExampleComponent.vue').default);
-Vue.component('dropzone-component', require('./backoffice-components/Dropzone.vue').default);
-Vue.component('filetypes-component', require('./backoffice-components/FileTypes.vue').default);
-Vue.component('my-input', require('./backoffice-components/MyInput.vue').default);
-Vue.component('bo-file-input', require('./backoffice-components/form/BoFileInput.vue').default);
-Vue.component('alert-success', require('./backoffice-components/alerts/AlertSuccess.vue').default);
+require('./components')
 
 import Multiselect from "vue-multiselect";
 

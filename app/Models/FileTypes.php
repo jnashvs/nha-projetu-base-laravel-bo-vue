@@ -17,12 +17,24 @@ class FileTypes extends Model
 
     private $_EXTENSIONS;
 
+    public function getId(){
+        return $this->id;
+    }
+
+    public function getTitle(){
+        return $this->title;
+    }
+
+    public function getDirectory(){
+        return $this->directory;
+    }
+
     public function files() : HasMany
     {
         return $this->hasMany(Files::class);
     }
 
-    public function getTypes(){
+    public function getExtensions(){
 
         foreach ($this->getExtensionsDecoded() as $key => $value){
             $plus = count($this->getExtensionsDecoded()) > ++$key ? ', ' : '';
@@ -34,5 +46,13 @@ class FileTypes extends Model
 
     public function getExtensionsDecoded(){
         return json_decode($this->extensions);
+    }
+
+    public function getMaxFileSize(){
+        return $this->max_file_size ? $this->max_file_size. ' Mb' : '';
+    }
+
+    public function getCreatedAt(){
+        return $this->created_at;
     }
 }

@@ -4,14 +4,10 @@ namespace App\Http\Controllers\Backoffice;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Models\Files;
 use App\Models\FileTypes;
 use App\Repositories\Repository;
-use function GuzzleHttp\json_decode;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Illuminate\Support\Facades\Storage;
 
 class FilesController extends Controller
 {
@@ -71,7 +67,6 @@ class FilesController extends Controller
 
     public function allFiles(Request $request)
     {
-
         $columns = ['id', 'path', 'created_at'];
 
         $directory = $request->input('file_type_slug');
@@ -102,9 +97,8 @@ class FilesController extends Controller
 
     public function removeFile($id)
     {
-
         $res = $this->files->find($id);
-        
+
         $deleted = $this->files->delete($res->id);
 
         if (file_exists(public_path($res->path))) {
@@ -112,11 +106,8 @@ class FilesController extends Controller
             unlink(public_path($res->path));
             $files = "Delete process success";
         } else {
-
-            dd('File does not exists.');
             $files = "Delete process error";
         }
-        
 
         return json_encode($files);
     }

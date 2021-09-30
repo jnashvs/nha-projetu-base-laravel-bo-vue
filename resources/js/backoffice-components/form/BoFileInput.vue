@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import ModalFiles from "../../backoffice-components/ModalFiles.vue";
+import ModalFiles from "../file-management/ModalFiles.vue";
 
 export default {
   // OR register locally

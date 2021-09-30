@@ -128,8 +128,8 @@
 <script>
 import vue2Dropzone from "vue2-dropzone";
 import "vue2-dropzone/dist/vue2Dropzone.min.css";
-import Datatable from "./Datatable.vue";
-import Pagination from "./Pagination.vue";
+import Datatable from "../datatable/Datatable.vue";
+import Pagination from "../datatable/Pagination.vue";
 
 export default {
   components: {
