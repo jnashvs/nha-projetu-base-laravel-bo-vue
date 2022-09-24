@@ -1,51 +1,34 @@
 <?php
 
-
-
-
-//Auth::routes();
-
-//Route::get('/', 'HomeController@index')->name('home');
-
-Route::group(['namespace' => 'Backoffice'], function()
-{
-    // Controllers Within The "App\Http\Controllers\Admin" Namespace
+Route::group(['namespace' => 'Backoffice'], function () {
 
     Auth::routes();
 
-    //auth routes
-
     Route::group(['middleware' => ['auth']], function () {
-        Route::get('/', 'HomeController@index')->name('home');
-    
+
         Route::get('/test', function () {
             return view('backoffice.test');
         });
-
-        Route::resource('user-management', 'UserManagementController');
-
-        Route::get('/user-management/edit/{id?}/', 'UserManagementController@edit')->name('user-management.edit');
-
         Route::get('/files', 'FilesController@index')->name('files');
 
-        Route::get('/file-types', 'FileTypesController@index')->name('file-types');
+        Route::controller(HomeController::class)->group(function () {
+            Route::get('/', 'index')->name('home');
+            Route::post('/testpost', 'testpost')->name('testpost');
+        });
 
-        //Route::get('/file-types/create', 'FileTypesController@create')->name('create-file-types');
+        Route::controller(UserManagementController::class)->group(function () {
+            Route::get('/user-management/edit/{id?}/', 'edit')->name('user-management.edit');
+            Route::resource('user-management', 'UserManagementController');
+        });
 
-        Route::get('/file-types/edit/{id?}/', 'FileTypesController@edit')->name('edit-file-types');
+        Route::controller(FileTypesController::class)->group(function () {
+            Route::get('/file-types/edit/{id?}/', 'edit')->name('edit-file-types');
+            Route::post('/file-types/store/{id?}', 'store')->name('file.types.store');
+            Route::post('/file-types/save/{id?}', 'save')->name('filetypes.save');
+            Route::delete('/file-types/delete/', 'delete')->name('delete-file-types');
+            //Route::get('/file-types/edit', 'FileTypesController@edit')->name('create-file-types');
+            //Route::get('/file-types/create', 'FileTypesController@create')->name('create-file-types');
+        });
 
-        Route::post('/file-types/store/{id?}', 'FileTypesController@store')->name('file.types.store');
-
-        Route::post('/file-types/save/{id?}', 'FileTypesController@save')->name('filetypes.save');
-        
-
-        Route::delete('/file-types/delete/', 'FileTypesController@delete')->name('delete-file-types');
-
-        //Route::get('/file-types/edit', 'FileTypesController@edit')->name('create-file-types');
-
-        Route::post('/testpost', 'HomeController@testpost')->name('testpost');
     });
-    
 });
-
-
