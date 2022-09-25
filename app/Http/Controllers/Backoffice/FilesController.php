@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Backoffice;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Str;
 use App\Models\Files;
 use App\Models\FileTypes;
 use App\Repositories\Repository;
+use App\Services\FilesManager;
 
 class FilesController extends Controller
 {
@@ -16,13 +16,11 @@ class FilesController extends Controller
      *
      * @return void
      */
-    protected $files;
     protected $filetypes;
 
-    public function __construct(Files $files, FileTypes $filetypes)
+    public function __construct(FileTypes $filetypes)
     {
         // set the model
-        $this->files = new Repository($files);
         $this->filetypes = new Repository($filetypes);
     }
 
@@ -40,29 +38,7 @@ class FilesController extends Controller
 
     public function fileStore(Request $request)
     {
-        $file = $request->file('file');
-
-        $result = $this->filetypes->getModel()->select('id', 'directory')->firstWhere('directory', $request->input('path'));
-
-        if ($file && $result) {
-
-            $path = "/files/$result->directory/";
-
-            $file_name = Str::random(4) . '-' . $file->getClientOriginalName();
-            $res = $file->move(public_path($path), $file_name);
-
-            $res = $this->files->create(
-                [
-                    'path' => $path . $file_name,
-                    'file_type_id' => $result->id,
-                    'size' => 0
-                ]
-            );
-
-            return json_encode($res);
-        } else {
-            return json_encode(["error" => "Nenhum diretorio encontrado"]);
-        }
+        return (new FilesManager())->uploadFiles($request);
     }
 
     public function allFiles(Request $request)
