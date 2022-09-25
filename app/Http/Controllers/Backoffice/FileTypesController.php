@@ -57,6 +57,7 @@ class FileTypesController extends Controller
                 File::makeDirectory($dir_path, 0777, true, true);
                 $msg = $this->SUCESS_CREATED;
             }
+            $msg = $this->SUCESS_CREATED;
         } else {
             $all = Session::all();
             $old_dir_path = public_path() . "/files/{$all['old_dir']}/";
@@ -64,6 +65,8 @@ class FileTypesController extends Controller
                 $this->model->update($dados, $dados['id']);
                 $msg = $this->SUCESS_UPDATED;
             }
+
+            $msg = $this->SUCESS_CREATED;
         }
 
         return redirect()->route('file-types')->with('status', $msg);

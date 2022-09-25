@@ -22,6 +22,7 @@ Route::group(['namespace' => 'Backoffice'], function () {
         });
 
         Route::controller(FileTypesController::class)->group(function () {
+            Route::get('/file-types', 'index')->name('file-types');
             Route::get('/file-types/edit/{id?}/', 'edit')->name('edit-file-types');
             Route::post('/file-types/store/{id?}', 'store')->name('file.types.store');
             Route::post('/file-types/save/{id?}', 'save')->name('filetypes.save');
